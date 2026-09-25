@@ -1,10 +1,17 @@
 from fastapi import FastAPI
 
-from backend.app.routers.components import router as component_router
-from backend.app.routers.pages import router as page_router
+from app.routers.api.v1.stubs import (
+	public_router,
+	router as api_v1_router,
+	system_router,
+	web_components_router,
+)
+
 
 app = FastAPI(title="Python Learning Hub")
 
-# Page routes return complete layouts; component routes return HTMX fragments.
-app.include_router(page_router)
-app.include_router(component_router)
+app.include_router(api_v1_router, prefix="/api/v1")
+app.include_router(public_router)
+app.include_router(web_components_router, prefix="/web-components")
+app.include_router(system_router, tags=["system"])
+

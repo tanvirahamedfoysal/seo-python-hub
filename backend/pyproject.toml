@@ -1,5 +1,5 @@
 [project]
-name = "seo-focused-python-learning-hub"
+name = "backend"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -11,11 +11,12 @@ dependencies = [
     "alembic>=1.20.0",
     "asyncpg>=0.31.0",
     "fastapi[standard]>=0.141.1",
-    "uvicorn[standard]>=0.53.0",
+    "sqlalchemy>=2.1.1",
+    "uvicorn[standard]>=0.54.0",
 ]
 
 [project.scripts]
-seo-focused-python-learning-hub = "seo_focused_python_learning_hub:main"
+backend = "backend:main"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
