@@ -197,6 +197,8 @@ Use Flutter under \texttt{/app} for workflows whose value comes from client-side
 Do not force every feature to exist in both frontends. A topic can have an SEO-friendly public page and an API representation for Flutter without requiring two separate user interfaces for every action.
 \end{notebox}
 
+\clearpage
+
 \safeheading{URL contract}
 \begin{longtable}{@{}P{.28\linewidth}P{.24\linewidth}P{.38\linewidth}@{}}
 \caption{Stable URL ownership contract}\label{tab:url-contract}\\
@@ -220,6 +222,8 @@ Do not force every feature to exist in both frontends. A topic can have an SEO-f
 \texttt{/api/v1/...} & FastAPI JSON & Data and mutation contract for Flutter and future clients.\\
 \texttt{/ws/...} & FastAPI WebSocket & Optional real-time features introduced later.\\
 \end{longtable}
+
+\clearpage
 
 \section{End-to-end architecture}
 
@@ -423,6 +427,8 @@ Services should answer product questions rather than framework questions. Exampl
   \item \texttt{DiscussionService}: create, edit, moderate, and retrieve discussion content.
 \end{itemize}
 
+\clearpage
+
 \safeheading{Thin route handler example}
 \begin{lstlisting}[language=Python,caption={A public route that delegates to a service}]
 @router.get("/topics/{slug}", response_class=HTMLResponse)
@@ -524,6 +530,8 @@ async def mark_complete(
 \safeheading{Flutter source and generated output}
 The Dart project remains a normal Flutter project. It owns widgets, navigation, state management, API clients, and application styling. The backend owns the compiled artifact only.
 
+\clearpage
+
 \begin{lstlisting}[caption={Development and production relationship}]
 frontend/flutter_app/             # source, edited by developers
         |
@@ -573,6 +581,8 @@ Every indexable page should have:
 \begin{successbox}
 The SEO rule is simple: if a page is valuable to someone who has not signed in, make it a real Jinja2 URL. Flutter can link to it, but search engines should not need to boot Flutter to read it.
 \end{successbox}
+
+\clearpage
 
 \section{Development and deployment workflow}
 
@@ -627,6 +637,8 @@ Generated output should be reproducible and disposable. Do not hand-edit generat
 \end{center}
 
 \FloatBarrier
+
+\clearpage
 
 \section{Testing strategy}
 
@@ -747,7 +759,6 @@ The first production-ready milestone is complete when:
 The core rule to keep visible while implementing is: \textbf{one domain, one FastAPI backend, two deliberate presentation layers, shared services, and a staged roadmap}. That gives the project the SEO benefits of server-rendered content without giving up the richer interactions that Flutter is good at.
 \end{keybox}
 
-\clearpage
 \appendix
 \section{Quick reference}
 \begin{tabularx}{\linewidth}{@{}P{.34\linewidth}Y@{}}
