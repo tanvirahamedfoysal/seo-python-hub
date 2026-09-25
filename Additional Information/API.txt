@@ -1,0 +1,333 @@
+PUBLIC HTML ENDPOINTS
+---------------------
+
+GET /
+    Home page.
+
+GET /roadmap
+    Complete Python learning roadmap.
+
+GET /roadmap/{slug}
+    Roadmap category or level page.
+
+GET /topics
+    Public topic listing.
+
+GET /topics/{slug}
+    Server-rendered topic/article detail page.
+
+GET /categories
+    Public category listing.
+
+GET /categories/{slug}
+    Topics within a category.
+
+GET /search
+    Public search results page.
+
+GET /about
+    About page.
+
+GET /contact
+    Contact page.
+
+GET /sitemap.xml
+    Dynamically generated sitemap for published public pages.
+
+GET /robots.txt
+    Crawler instructions.
+
+GET /login
+    Login page or redirect to the Flutter application.
+
+GET /register
+    Registration page or redirect to the Flutter application.
+
+GET /app
+    Flutter Web application entry point.
+
+
+HTMX FRAGMENT ENDPOINTS
+-----------------------
+
+GET /web-components/search-results
+    Returns filtered search-result HTML.
+
+GET /web-components/topic-list
+    Returns a filtered or paginated topic list.
+
+GET /web-components/related-topics
+    Returns related topic cards.
+
+POST /web-components/bookmarks/{topic_id}
+    Adds a topic to the current user's bookmarks.
+
+DELETE /web-components/bookmarks/{topic_id}
+    Removes a topic from the current user's bookmarks.
+
+POST /web-components/progress/{topic_id}/complete
+    Marks a topic as completed.
+
+DELETE /web-components/progress/{topic_id}/complete
+    Removes completion status.
+
+GET /web-components/progress/{topic_id}
+    Returns an updated progress indicator.
+
+GET /web-components/discussions/{topic_id}
+    Returns discussion threads for a topic.
+
+POST /web-components/discussions
+    Creates a discussion thread.
+
+POST /web-components/discussions/{discussion_id}/replies
+    Adds a reply to a discussion.
+
+POST /web-components/reports
+    Submits a content report.
+
+POST /web-components/newsletter/subscribe
+    Subscribes a visitor to updates.
+
+
+REST API ENDPOINTS
+Base path: /api/v1
+-------------------
+
+AUTHENTICATION
+
+POST /api/v1/auth/register
+    Creates a new user account.
+
+POST /api/v1/auth/login
+    Authenticates a user and creates a session or returns tokens.
+
+POST /api/v1/auth/logout
+    Logs out the current user.
+
+POST /api/v1/auth/refresh
+    Refreshes an access token if token-based authentication is used.
+
+POST /api/v1/auth/forgot-password
+    Starts the password-reset process.
+
+POST /api/v1/auth/reset-password
+    Sets a new password using a valid reset token.
+
+GET /api/v1/auth/me
+    Returns the currently authenticated user.
+
+
+USER AND PROFILE
+
+GET /api/v1/users/me
+    Returns the current user's profile.
+
+PATCH /api/v1/users/me
+    Updates profile information.
+
+PATCH /api/v1/users/me/password
+    Changes the current user's password.
+
+DELETE /api/v1/users/me
+    Requests account deletion.
+
+GET /api/v1/users/me/statistics
+    Returns learning statistics and activity summaries.
+
+
+CONTENT
+
+GET /api/v1/roadmap
+    Returns the complete learning roadmap.
+
+GET /api/v1/roadmap/{slug}
+    Returns a roadmap section.
+
+GET /api/v1/topics
+    Returns a paginated list of topics.
+
+GET /api/v1/topics/{slug}
+    Returns topic details.
+
+GET /api/v1/categories
+    Returns available topic categories.
+
+GET /api/v1/categories/{slug}/topics
+    Returns topics in a category.
+
+GET /api/v1/tags
+    Returns available content tags.
+
+GET /api/v1/tags/{slug}/topics
+    Returns topics associated with a tag.
+
+GET /api/v1/search
+    Searches topics, tutorials, and guides.
+
+GET /api/v1/topics/{topic_id}/related
+    Returns related topics.
+
+GET /api/v1/topics/{topic_id}/quizzes
+    Returns quizzes associated with a topic.
+
+GET /api/v1/quizzes/{quiz_id}
+    Returns quiz details and questions.
+
+POST /api/v1/quizzes/{quiz_id}/attempts
+    Submits a quiz attempt.
+
+
+PROGRESS AND BOOKMARKS
+
+GET /api/v1/progress
+    Returns the current user's learning progress.
+
+GET /api/v1/progress/{topic_id}
+    Returns progress for one topic.
+
+POST /api/v1/progress/{topic_id}/complete
+    Marks a topic as completed.
+
+DELETE /api/v1/progress/{topic_id}/complete
+    Removes topic completion.
+
+GET /api/v1/bookmarks
+    Returns the current user's bookmarks.
+
+POST /api/v1/bookmarks
+    Creates a bookmark.
+
+DELETE /api/v1/bookmarks/{bookmark_id}
+    Deletes a bookmark.
+
+GET /api/v1/bookmarks/{bookmark_id}
+    Returns one bookmark.
+
+
+DISCUSSIONS
+
+GET /api/v1/discussions
+    Returns public or accessible discussion threads.
+
+POST /api/v1/discussions
+    Creates a discussion thread.
+
+GET /api/v1/discussions/{discussion_id}
+    Returns a discussion thread and its replies.
+
+PATCH /api/v1/discussions/{discussion_id}
+    Edits a discussion owned by the current user.
+
+DELETE /api/v1/discussions/{discussion_id}
+    Deletes a discussion owned by the current user.
+
+POST /api/v1/discussions/{discussion_id}/replies
+    Adds a reply.
+
+PATCH /api/v1/replies/{reply_id}
+    Edits a reply owned by the current user.
+
+DELETE /api/v1/replies/{reply_id}
+    Deletes a reply.
+
+POST /api/v1/reports
+    Reports a discussion, reply, or other content.
+
+
+ADMINISTRATION
+
+GET /api/v1/admin/users
+    Lists users for administrators.
+
+GET /api/v1/admin/users/{user_id}
+    Returns user details.
+
+PATCH /api/v1/admin/users/{user_id}/role
+    Changes a user's role.
+
+PATCH /api/v1/admin/users/{user_id}/status
+    Suspends or reactivates a user.
+
+GET /api/v1/admin/topics
+    Lists all topics, including drafts.
+
+POST /api/v1/admin/topics
+    Creates a topic.
+
+PATCH /api/v1/admin/topics/{topic_id}
+    Updates topic content or metadata.
+
+DELETE /api/v1/admin/topics/{topic_id}
+    Deletes or archives a topic.
+
+POST /api/v1/admin/topics/{topic_id}/publish
+    Publishes a topic.
+
+POST /api/v1/admin/topics/{topic_id}/unpublish
+    Removes a topic from public visibility.
+
+GET /api/v1/admin/reports
+    Lists reported content.
+
+PATCH /api/v1/admin/reports/{report_id}
+    Updates the status of a report.
+
+GET /api/v1/admin/statistics
+    Returns platform-level statistics.
+
+
+WEBSOCKET ENDPOINTS
+-------------------
+
+WS /ws/chat
+    General authenticated chat connection.
+
+WS /ws/discussions/{discussion_id}
+    Real-time updates for a discussion thread.
+
+WS /ws/rooms/{room_id}
+    Real-time messages for a specific community room.
+
+WS /ws/notifications
+    Sends real-time notifications to the current user.
+
+WS /ws/admin/monitor
+    Optional administrator monitoring channel.
+
+Possible WebSocket events:
+
+message.created
+message.updated
+message.deleted
+user.joined
+user.left
+discussion.updated
+notification.created
+typing.started
+typing.stopped
+
+SYSTEM AND HEALTH ENDPOINTS
+----------------------------
+
+GET /health
+    Basic application health check.
+
+GET /ready
+    Checks whether the application is ready to receive traffic.
+
+GET /metrics
+    Optional internal metrics endpoint.
+
+GET /docs
+    FastAPI Swagger API documentation.
+
+GET /redoc
+    FastAPI ReDoc API documentation.
+
+
+Public SEO content       /topics/{slug}
+HTMX interactions        /web-components/...
+Flutter JSON API         /api/v1/...
+Real-time communication  /ws/...
+Flutter application      /app

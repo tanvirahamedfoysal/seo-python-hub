@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+<p>Follow a structured path from Python fundamentals to advanced practice.</p>
+<ul>
+    {% for topic in topics %}
+    <li>{{ topic }}</li>
+    {% endfor %}
+</ul>
+<section id="progress">
+    <button
+        hx-post="{{ url_for('topic-progress', topic_id=1) }}"
+        hx-target="#progress"
+        hx-swap="innerHTML">
+        Mark Variables complete
+    </button>
+</section>
+{% endblock %}
