@@ -44,6 +44,11 @@ async def flutter_app():
     return _response_for("index.html")
 
 
+@router.get("/app/send", include_in_schema=False)
+async def flutter_send_page():
+    return _response_for("index.html")
+
+
 @router.get("/app/{path:path}", include_in_schema=False)
 async def flutter_asset(path: str):
     return _response_for(path)

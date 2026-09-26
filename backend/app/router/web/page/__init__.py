@@ -22,6 +22,20 @@ async def home(request: Request):
     )
 
 
+@router.get("/topics", name="topics")
+async def topics(request: Request):
+    settings = get_settings()
+    return templates.TemplateResponse(
+        request=request,
+        name="pages/topics.html",
+        context={
+            "title": settings.app_name,
+            "version": settings.app_version,
+            "topics": ["Python", "NumPy", "Pandas", "FastAPI"],
+        },
+    )
+
+
 
 
 

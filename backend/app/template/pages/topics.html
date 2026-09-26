@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Topics | {{ title }}{% endblock %}
+
+{% block content %}
+<h1>Python topics</h1>
+<p>Explore some of the tools used in the project.</p>
+<ul>
+    {% for topic in topics %}
+    <li>{{ topic }}</li>
+    {% endfor %}
+</ul>
+<p><a href="{{ url_for('home') }}">Back to welcome</a></p>
+{% endblock %}
