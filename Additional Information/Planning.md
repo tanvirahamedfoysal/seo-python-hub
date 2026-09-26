@@ -10,7 +10,7 @@ The repository currently contains the operational foundation, not the complete f
 - Versioned API boundary at `/api/v1`; most domain routes remain explicit `501 Not Implemented` placeholders until their services, repositories, schemas, and migrations are built.
 - Flutter Web API client using the compile-time `API_BASE_URL` value. Production currently points to `https://seo-python-hub-437e0515.fastapicloud.dev`.
 - FastAPI deployment serving both backend routes and Flutter at `/app`.
-- GitHub Actions for Flutter Hosting deployment and backend tests.
+- GitHub Actions for building the embedded Flutter artifact and backend tests.
 
 The production application is served by FastAPI. The Flutter artifact is built with `/app/` as its base path, copied into `backend/app/flutter/web`, and served at `/app`; API calls remain under the same FastAPI origin.
 

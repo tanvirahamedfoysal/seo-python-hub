@@ -6,7 +6,12 @@ python scripts/build_flutter.py
 
 2. Deploy the backend, including the Flutter Web files:
 
+python scripts/build_flutter.py
+
+2. Deploy from the backend directory:
+
 cd backend
+uv run pytest
 uv run fastapi deploy .
 
 The script builds Flutter with `--base-href /app/` and the FastAPI API URL.

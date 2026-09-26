@@ -330,5 +330,5 @@ flutter build web --release \
 	--dart-define=API_BASE_URL=https://seo-python-hub-437e0515.fastapicloud.dev
 ```
 
-FastAPI Cloud must be connected to the repository or deployed after running `python scripts/build_flutter.py` with `fastapi deploy backend`. The `/app` fallback serves Flutter's `index.html` for client-side routes such as `/app/dashboard`.
+FastAPI Cloud must be connected to the repository or deployed after running `python scripts/build_flutter.py` with `uv run fastapi deploy .` from `backend/`. The `/app` fallback serves Flutter's `index.html` for client-side routes such as `/app/dashboard`.
 

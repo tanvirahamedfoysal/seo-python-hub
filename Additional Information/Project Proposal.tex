@@ -325,15 +325,14 @@ python-learning-hub/
 |   |   |   `-- flutter/web/          # compiled Flutter output only
 |   |-- migrations/
 |   `-- pyproject.toml
-|-- frontend/flutter_app/         # Dart source project
+|-- frontend/                    # Dart source project
 |-- scripts/build_flutter.py
-|-- tests/
 |-- README.md
 `-- .env.example
 \end{lstlisting}
 
 \begin{notebox}
-Keep Flutter source in \texttt{frontend/flutter\_app}. Copy only its compiled \texttt{build/web} artifact into \texttt{backend/app/flutter/web}. This prevents Python tooling and Dart tooling from becoming one tangled project.
+Keep Flutter source in \texttt{frontend/}. Copy only its compiled \texttt{build/web} artifact into \texttt{backend/app/flutter/web}. This prevents Python tooling and Dart tooling from becoming one tangled project.
 \end{notebox}
 
 \safeheading{Responsibilities by directory}
@@ -537,11 +536,11 @@ The Dart project remains a normal Flutter project. It owns widgets, navigation, 
 \clearpage
 
 \begin{lstlisting}[caption={Development and production relationship}]
-frontend/flutter_app/             # source, edited by developers
+frontend/                          # source, edited by developers
         |
         | flutter build web
         v
-frontend/flutter_app/build/web/   # generated deployment artifact
+frontend/build/web/                # generated deployment artifact
         |
         | copy during build
         v
@@ -651,8 +650,6 @@ Both the backend and Flutter artifact are released from the same Git commit. Fas
 \end{center}
 
 \FloatBarrier
-
-\clearpage
 
 \section{Testing strategy}
 
@@ -789,7 +786,7 @@ Where does the rich authenticated UI render? & Flutter Web below \texttt{/app}.\
 Where does Flutter get data? & FastAPI JSON endpoints below \texttt{/api/v1}.\\
 Where does business logic live? & Shared services, called by both route families.\\
 Where does SQL live? & Repositories only.\\
-Where does Flutter source live? & \texttt{frontend/flutter\_app}.\\
+Where does Flutter source live? & \texttt{frontend/}.\\
 What is deployed for Flutter? & Generated \texttt{build/web} copied to the backend artifact.\\
 What should be built first? & Public content, search, authentication, progress, and bookmarks.\\
 What comes later? & Rich discussions, admin, Redis, WebSockets, chat, and advanced analytics.\\
