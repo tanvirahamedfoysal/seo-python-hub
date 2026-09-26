@@ -58329,7 +58329,7 @@ A.Kl.prototype={}
 A.Kx.prototype={}
 A.Bv.prototype={
 O(a){var s=null
-return new A.rV(B.Dz,"Flutter Demo is updated fylly",A.a98(s,A.abt(B.P,s,s,B.Dl),s),s)}}
+return new A.rV(B.Dz,"Initial Flutter Demo",A.a98(s,A.abt(B.P,s,s,B.Dl),s),s)}}
 A.t8.prototype={
 al(){var s=new A.Mx(A.d([],t.O))
 return new A.ws(new A.M0(s))}}
@@ -58343,7 +58343,7 @@ Tz(){this.aI(new A.a3A(this))},
 O(a){var s,r=this,q=null,p=A.aC(a).ax,o=p.y2
 p=o==null?p.c:o
 r.a.toString
-o=A.a92("SEO Python Hub",q)
+o=A.a92("SEO Python Hub Title",q)
 s=r.f
 s===$&&A.b()
 s=A.z2(A.akh(A.d([B.L4,new A.n7(s,new A.a3B(),q,t.wY),B.H_,B.L2,A.a92(""+r.d,A.aC(a).ok.e)],t.nA),B.pg),q,q)
@@ -64105,7 +64105,7 @@ B.JV=new A.n(!0,B.B,null,".AppleSystemUIFont",null,null,null,null,null,null,null
 B.Kb=new A.n(!0,B.n,null,".AppleSystemUIFont",null,null,null,null,null,null,null,null,null,null,null,null,null,B.e,null,null,null,"blackRedwoodCity labelMedium",null,null,null,null)
 B.HW=new A.n(!0,B.n,null,".AppleSystemUIFont",null,null,null,null,null,null,null,null,null,null,null,null,null,B.e,null,null,null,"blackRedwoodCity labelSmall",null,null,null,null)
 B.L1=new A.d3(B.Ji,B.It,B.Jj,B.JF,B.Id,B.Ik,B.IJ,B.JB,B.IT,B.JY,B.HP,B.I3,B.JV,B.Kb,B.HW)
-B.L2=new A.jk("You have pushed the button this many times:",null,null,null,null)
+B.L2=new A.jk("Counter updated this many times:",null,null,null,null)
 B.L3=new A.jk("Unavailable",null,null,null,null)
 B.L4=new A.jk("Backend connection",null,null,null,null)
 B.No=new A.a_H(0,"system")

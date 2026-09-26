@@ -13,9 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo is updated fylly',
+      title: 'Initial Flutter Demo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const MyHomePage(title: 'SEO Python Hub'),
+      home: const MyHomePage(title: 'SEO Python Hub Title'),
     );
   }
 }
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             const SizedBox(height: 24),
-            const Text('You have pushed the button this many times:'),
+            const Text('Counter updated this many times:'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
