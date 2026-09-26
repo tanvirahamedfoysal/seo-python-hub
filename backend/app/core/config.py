@@ -13,6 +13,13 @@ class Settings:
     database_url: str | None
 
 
+def _normalize_api_prefix(value: str) -> str:
+    prefix = value.strip()
+    if not prefix.startswith("/"):
+        prefix = f"/{prefix}"
+    return prefix.rstrip("/") or "/"
+
+
 @lru_cache
 def get_settings() -> Settings:
     origins = tuple(
@@ -27,7 +34,7 @@ def get_settings() -> Settings:
         app_name=os.getenv("APP_NAME", "SEO Python Hub"),
         app_version=os.getenv("APP_VERSION", "0.1.0"),
         environment=os.getenv("ENVIRONMENT", "development"),
-        api_prefix=os.getenv("API_PREFIX", "/api/v1"),
+        api_prefix=_normalize_api_prefix(os.getenv("API_PREFIX", "/api/v1")),
         cors_origins=origins,
         database_url=os.getenv("DATABASE_URL"),
     )

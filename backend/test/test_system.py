@@ -1,9 +1,22 @@
 from fastapi.testclient import TestClient
+import pytest
 
 from app.main import app
+from app.core.config import get_settings
 
 
 client = TestClient(app)
+
+
+@pytest.mark.parametrize("configured_prefix", ["api/v1", "/api/v1/"])
+def test_api_prefix_is_normalized(monkeypatch: pytest.MonkeyPatch, configured_prefix: str) -> None:
+    monkeypatch.setenv("API_PREFIX", configured_prefix)
+    get_settings.cache_clear()
+
+    try:
+        assert get_settings().api_prefix == "/api/v1"
+    finally:
+        get_settings.cache_clear()
 
 
 def test_health() -> None:
@@ -33,11 +46,12 @@ def test_api_prefix_is_available() -> None:
     assert response.status_code == 501
 
 
-def test_root_renders_backend_dummy_page() -> None:
+def test_root_renders_welcome_page_with_app_link() -> None:
     response = client.get("/")
 
     assert response.status_code == 200
-    assert "SEO Python Hub backend" in response.text
+    assert "Welcome to SEO Python Hub" in response.text
+    assert "/app" in response.text
 
 
 def test_flutter_app_is_served_by_fastapi() -> None:

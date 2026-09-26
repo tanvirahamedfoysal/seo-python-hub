@@ -8,7 +8,7 @@ from app.core.config import get_settings
 
 router = APIRouter(tags=["web"])
 templates = Jinja2Templates(
-    directory=str(Path(__file__).resolve().parents[3] / "templates")
+    directory=str(Path(__file__).resolve().parents[3] / "template")
 )
 
 
