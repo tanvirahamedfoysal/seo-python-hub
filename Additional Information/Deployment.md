@@ -1,24 +1,21 @@
-Automatic deployment:
+Unified FastAPI deployment:
 
 1. Push changes to the `main` branch.
-2. GitHub Actions builds and deploys Flutter Hosting when `frontend/` changes.
-3. GitHub Actions runs backend tests when `backend/` changes.
-4. FastAPI Cloud deploys the backend from the configured GitHub repository.
+2. Build and copy Flutter into the backend package:
 
-Manual Firebase deployment from the `frontend` directory:
+python scripts/build_flutter.py
 
-flutter clean
-flutter pub get
-flutter build web --release --dart-define=API_BASE_URL=https://seo-python-hub-437e0515.fastapicloud.dev
-firebase deploy --only hosting
+3. Deploy the backend and embedded Flutter application:
+
+cd backend
+uv run fastapi deploy .
 
 Runtime links:
 
-Frontend: https://seo-python-hub.web.app
-Backend API: https://seo-python-hub-437e0515.fastapicloud.dev
+Application: https://seo-python-hub-437e0515.fastapicloud.dev/app
+Backend API: https://seo-python-hub-437e0515.fastapicloud.dev/api/v1
 API docs: https://seo-python-hub-437e0515.fastapicloud.dev/docs
 
-The Flutter app reads `API_BASE_URL` at build time. The backend must allow the
-frontend origin through `CORS_ORIGINS`, and both deployments must use the same
-commit to stay synchronized.
+The Flutter app reads `API_BASE_URL` at build time and is served by the same
+FastAPI origin.
 

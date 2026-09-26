@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1790389003.72178 "/Users/zombie/Desktop/Development/seo-python-hub/Additional Information/Project Proposal.tex" "Project Proposal.pdf" "Project Proposal" 1790389005.30575 0
-  "/Users/zombie/Desktop/Development/seo-python-hub/Additional Information/Project Proposal.tex" 1790389001.16101 36370 1be39a336e6b7581fc0de9286ce78892 ""
+["pdflatex"] 1790389973.27122 "/Users/zombie/Desktop/Development/seo-python-hub/Additional Information/Project Proposal.tex" "Project Proposal.pdf" "Project Proposal" 1790389974.98606 0
+  "/Users/zombie/Desktop/Development/seo-python-hub/Additional Information/Project Proposal.tex" 1790389974.79254 36367 fad7c186c6ef365a657cc548cf81fe4b ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1254269338 2375 baa924870cfb487815765f9094cf3728 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
   "/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc" 1254269338 3031 6c4d3515bf7115d8518af1c9ab97ca44 ""
@@ -215,10 +215,10 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1786497510 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1786497476 3636774 04a2a3a4fb5d88a26b781213c968def4 ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "Project Proposal.aux" 1790389005.1512 9946 64550c36c792ba3c88e10100349fc4f2 "pdflatex"
-  "Project Proposal.out" 1790389005.15267 10277 2c401c267489c60f332d896b19c9c104 "pdflatex"
-  "Project Proposal.tex" 1790389001.16101 36370 1be39a336e6b7581fc0de9286ce78892 ""
-  "Project Proposal.toc" 1790389005.153 4856 d796a8428f290897b4e8e210e3a004b6 "pdflatex"
+  "Project Proposal.aux" 1790389974.85249 9946 64550c36c792ba3c88e10100349fc4f2 "pdflatex"
+  "Project Proposal.out" 1790389974.85395 10277 2c401c267489c60f332d896b19c9c104 "pdflatex"
+  "Project Proposal.tex" 1790389974.79254 36367 fad7c186c6ef365a657cc548cf81fe4b ""
+  "Project Proposal.toc" 1790389974.85427 4856 d796a8428f290897b4e8e210e3a004b6 "pdflatex"
   (generated)
   "Project Proposal.aux"
   "Project Proposal.log"

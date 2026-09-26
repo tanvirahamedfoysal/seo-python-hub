@@ -155,7 +155,7 @@ The visitor should be able to discover and read Python learning content without 
 
 \safeheading{Non-negotiable principles}
 \begin{enumerate}
-  \item \textbf{One backend boundary.} FastAPI serves the public pages, API, and Flutter application under one origin; Firebase Hosting is no longer required for the production application.
+  \item \textbf{One backend boundary.} FastAPI serves the public pages, API, and Flutter application under one origin; a separate frontend hosting service is not required for production.
   \item \textbf{Presentation is separate from business logic.} Jinja2 and Flutter may render the same concept differently, but they must not implement separate copies of the rules.
   \item \textbf{Public pages remain useful without JavaScript.} HTMX improves them; it must not be their only way to work.
   \item \textbf{URLs reveal ownership.} The path prefix is a routing contract, not an informal convention.

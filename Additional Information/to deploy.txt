@@ -19,6 +19,6 @@ Flutter application: https://seo-python-hub-437e0515.fastapicloud.dev/app
 Backend API: https://seo-python-hub-437e0515.fastapicloud.dev/api/v1
 API docs: https://seo-python-hub-437e0515.fastapicloud.dev/docs
 
-The Flutter app reads `API_BASE_URL` at build time. Once Flutter is served by
-FastAPI, cross-origin Firebase configuration is no longer required.
+The Flutter app reads `API_BASE_URL` at build time and is served by the same
+FastAPI origin.
 

@@ -9,10 +9,10 @@ The repository currently contains the operational foundation, not the complete f
 - Operational endpoints: `GET /health`, `GET /health/database`, `GET /ready`, and `GET /version`.
 - Versioned API boundary at `/api/v1`; most domain routes remain explicit `501 Not Implemented` placeholders until their services, repositories, schemas, and migrations are built.
 - Flutter Web API client using the compile-time `API_BASE_URL` value. Production currently points to `https://seo-python-hub-437e0515.fastapicloud.dev`.
-- Firebase Hosting deployment at `https://seo-python-hub.web.app`.
+- FastAPI deployment serving both backend routes and Flutter at `/app`.
 - GitHub Actions for Flutter Hosting deployment and backend tests.
 
-The production application is served by FastAPI. The Flutter artifact is built with `/app/` as its base path, copied into `backend/app/flutter/web`, and served at `/app`; API calls remain under the same FastAPI origin. Firebase Hosting is no longer required for the production application.
+The production application is served by FastAPI. The Flutter artifact is built with `/app/` as its base path, copied into `backend/app/flutter/web`, and served at `/app`; API calls remain under the same FastAPI origin.
 
 ## Frontend Architecture Summary
 
@@ -467,4 +467,4 @@ Python Learning Hub will provide a focused learning and community platform with 
 3. Implement request/response schemas and service functions before replacing API stubs.
 4. Connect Flutter screens to implemented `/api/v1` contracts through `ApiClient`.
 5. Add authentication, CSRF protection, authorization, and cookie configuration before state-changing workflows.
-6. Deploy FastAPI Cloud and Firebase from the same commit, then verify `/health`, `/version`, CORS, and the Flutter production build.
+6. Deploy FastAPI Cloud with the generated Flutter artifact, then verify `/health`, `/version`, `/app`, and the Flutter production build.

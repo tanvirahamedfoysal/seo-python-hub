@@ -19,7 +19,7 @@ def get_settings() -> Settings:
         origin.strip()
         for origin in os.getenv(
             "CORS_ORIGINS",
-            "http://localhost:3000,http://localhost:5000,https://seo-python-hub.web.app",
+            "http://localhost:3000,http://localhost:5000",
         ).split(",")
         if origin.strip()
     )
