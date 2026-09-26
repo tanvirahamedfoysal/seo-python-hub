@@ -207,3 +207,12 @@ for _method, _path in [
 
 for _path in ["/health", "/health/database", "/ready", "/version"]:
     register_router_stub(system_router, "GET", _path)
+
+
+
+
+
+
+
+
+

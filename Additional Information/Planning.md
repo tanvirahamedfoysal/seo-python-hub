@@ -1,6 +1,19 @@
 # Python Learning Hub
 ### SEO-Optimized Python Learning and Community Platform
 
+## Current implementation status
+
+The repository currently contains the operational foundation, not the complete feature set listed below. The implemented pieces are:
+
+- FastAPI configuration with `APP_NAME`, `APP_VERSION`, `ENVIRONMENT`, `API_PREFIX`, `DATABASE_URL`, and `CORS_ORIGINS`.
+- Operational endpoints: `GET /health`, `GET /health/database`, `GET /ready`, and `GET /version`.
+- Versioned API boundary at `/api/v1`; most domain routes remain explicit `501 Not Implemented` placeholders until their services, repositories, schemas, and migrations are built.
+- Flutter Web API client using the compile-time `API_BASE_URL` value. Production currently points to `https://seo-python-hub-437e0515.fastapicloud.dev`.
+- Firebase Hosting deployment at `https://seo-python-hub.web.app`.
+- GitHub Actions for Flutter Hosting deployment and backend tests.
+
+The production services are currently split. Flutter calls FastAPI over HTTPS, so FastAPI Cloud must allow the Firebase origin through `CORS_ORIGINS`. Both services should be deployed from the same commit. The proposed single-domain `/app` architecture remains a later migration.
+
 ## Frontend Architecture Summary
 
 Python Learning Hub intentionally uses **two frontend layers**:
@@ -445,4 +458,13 @@ python-learning-hub/
 
 ## Expected Outcome
 
-Python Learning Hub will provide a focused learning and community platform with a strong separation of responsibilities. FastAPI will remain the single backend; Jinja2 will deliver crawlable public HTML; HTMX will add lightweight progressive interactions; the REST API will support Flutter Web and future clients; and WebSockets will provide optional real-time communication. PostgreSQL, raw SQL, `asyncpg`, Redis, and Alembic will preserve a maintainable and scalable backend foundation without introducing an ORM or requiring a JavaScript SPA for public content.
+Python Learning Hub will provide a focused learning and community platform with a strong separation of responsibilities. FastAPI will remain the single backend; Jinja2 will deliver crawlable public HTML; HTMX will add lightweight progressive interactions; the REST API will support Flutter Web and future clients; and WebSockets will provide optional real-time communication. PostgreSQL, raw SQL, `asyncpg`, Redis, and Alembic will preserve a maintainable and scalable backend foundation without requiring a JavaScript SPA for public content.
+
+## Delivery sequence
+
+1. Keep operational endpoints, CI checks, and deployment configuration green.
+2. Add PostgreSQL migrations and raw SQL repositories for users, topics, progress, and bookmarks.
+3. Implement request/response schemas and service functions before replacing API stubs.
+4. Connect Flutter screens to implemented `/api/v1` contracts through `ApiClient`.
+5. Add authentication, CSRF protection, authorization, and cookie configuration before state-changing workflows.
+6. Deploy FastAPI Cloud and Firebase from the same commit, then verify `/health`, `/version`, CORS, and the Flutter production build.

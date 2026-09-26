@@ -1,4 +1,12 @@
 
+# Python Learning Hub API
+
+## Implementation status
+
+This document is the target API contract. The current backend exposes the `/api/v1` route boundary, but most domain endpoints are still deliberate `501 Not Implemented` placeholders until their database migrations, repositories, services, and schemas are implemented. The operational endpoints below are implemented and tested.
+
+Flutter Web calls the backend through the compile-time `API_BASE_URL` value. Production uses `https://seo-python-hub-437e0515.fastapicloud.dev`; local development can use `http://127.0.0.1:8000`. The Firebase origin `https://seo-python-hub.web.app` must be present in the backend `CORS_ORIGINS` setting.
+
 ## 1. Public HTML pages
 
 | Method | Endpoint | Purpose |
@@ -258,10 +266,10 @@ Prefix: `/api/v1/media`
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `GET` | `/health` | Basic application health |
-| `GET` | `/health/database` | Database connectivity |
-| `GET` | `/ready` | Deployment readiness |
-| `GET` | `/version` | Application version |
+| `GET` | `/health` | Returns `200` when the FastAPI process is running |
+| `GET` | `/health/database` | Returns `200` when `DATABASE_URL` connects and `503` otherwise |
+| `GET` | `/ready` | Returns `200` only when the configured PostgreSQL connection succeeds |
+| `GET` | `/version` | Returns the configured service name and `APP_VERSION` |
 | `GET` | `/docs` | Swagger API documentation |
 | `GET` | `/redoc` | ReDoc API documentation |
 | `GET` | `/openapi.json` | OpenAPI schema |
@@ -301,4 +309,25 @@ DELETE /api/v1/bookmarks/topics/{topic_id}
 GET  /api/v1/search
 GET  /health
 ```
+
+## Frontend and backend synchronization
+
+The services are currently deployed separately:
+
+```text
+GitHub push to main
+	-> GitHub Actions builds frontend/build/web
+	-> Firebase Hosting deploys https://seo-python-hub.web.app
+	-> FastAPI Cloud deploys backend/
+	-> Flutter requests https://seo-python-hub-437e0515.fastapicloud.dev/api/v1/...
+```
+
+Deploy both services from the same commit. The Flutter build must include the backend URL:
+
+```bash
+flutter build web --release \
+	--dart-define=API_BASE_URL=https://seo-python-hub-437e0515.fastapicloud.dev
+```
+
+FastAPI Cloud must be connected to the repository or deployed with `fastapi deploy backend`, and its `CORS_ORIGINS` must include the Firebase Hosting origin. The planned future topology serves Flutter below `/app` from FastAPI, which will remove this cross-origin deployment boundary.
 

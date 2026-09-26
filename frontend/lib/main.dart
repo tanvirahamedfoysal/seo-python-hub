@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'services/api_client.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -11,9 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Demo is updated fylly',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const MyHomePage(title: 'Flutter Demo Home Page Updated 10'),
+      home: const MyHomePage(title: 'SEO Python Hub is updated'),
     );
   }
 }
@@ -29,6 +31,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final ApiClient _apiClient = ApiClient();
+  late final Future<BackendStatus> _backendStatus;
+
+  @override
+  void initState() {
+    super.initState();
+    _backendStatus = _apiClient.fetchHealth();
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -51,6 +61,23 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: .center,
           children: [
+            const Text('Backend connection'),
+            FutureBuilder<BackendStatus>(
+              future: _backendStatus,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Unavailable');
+                }
+                if (!snapshot.hasData) {
+                  return const CircularProgressIndicator();
+                }
+                return Text(
+                  '${snapshot.data!.service}: ${snapshot.data!.status}',
+                  style: Theme.of(context).textTheme.titleMedium,
+                );
+              },
+            ),
+            const SizedBox(height: 24),
             const Text('You have pushed the button this many times:'),
             Text(
               '$_counter',
