@@ -5,7 +5,7 @@
 
 This document is the target API contract. The current backend exposes the `/api/v1` route boundary, but most domain endpoints are still deliberate `501 Not Implemented` placeholders until their database migrations, repositories, services, and schemas are implemented. The operational endpoints below are implemented and tested.
 
-Flutter Web calls the backend through the compile-time `API_BASE_URL` value. Production uses `https://seo-python-hub-437e0515.fastapicloud.dev`; local development can use `http://127.0.0.1:8000`. The Firebase origin `https://seo-python-hub.web.app` must be present in the backend `CORS_ORIGINS` setting.
+Flutter Web calls the backend through the compile-time `API_BASE_URL` value. Production uses `https://seo-python-hub-437e0515.fastapicloud.dev`; local development can use `http://127.0.0.1:8000`. Flutter is served by FastAPI at `/app`, so the production application URL is `https://seo-python-hub-437e0515.fastapicloud.dev/app`.
 
 ## 1. Public HTML pages
 
@@ -312,13 +312,14 @@ GET  /health
 
 ## Frontend and backend synchronization
 
-The services are currently deployed separately:
+The unified deployment is:
 
 ```text
 GitHub push to main
-	-> GitHub Actions builds frontend/build/web
-	-> Firebase Hosting deploys https://seo-python-hub.web.app
+	-> build Flutter with --base-href /app/
+	-> copy frontend/build/web into backend/app/flutter/web
 	-> FastAPI Cloud deploys backend/
+	-> FastAPI serves / and /app
 	-> Flutter requests https://seo-python-hub-437e0515.fastapicloud.dev/api/v1/...
 ```
 
@@ -329,5 +330,5 @@ flutter build web --release \
 	--dart-define=API_BASE_URL=https://seo-python-hub-437e0515.fastapicloud.dev
 ```
 
-FastAPI Cloud must be connected to the repository or deployed with `fastapi deploy backend`, and its `CORS_ORIGINS` must include the Firebase Hosting origin. The planned future topology serves Flutter below `/app` from FastAPI, which will remove this cross-origin deployment boundary.
+FastAPI Cloud must be connected to the repository or deployed after running `python scripts/build_flutter.py` with `fastapi deploy backend`. The `/app` fallback serves Flutter's `index.html` for client-side routes such as `/app/dashboard`.
 

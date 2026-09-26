@@ -145,7 +145,7 @@ This plan turns that model into an implementable repository, URL contract, reque
 \end{itemize}
 
 \begin{notebox}
-\textbf{Implementation status, September 2026.} The repository currently uses split hosting: Flutter Web is deployed to Firebase Hosting at \url{https://seo-python-hub.web.app}, while FastAPI is deployed separately at \url{https://seo-python-hub-437e0515.fastapicloud.dev}. The Flutter build receives the backend URL through the compile-time \texttt{API\_BASE\_URL} value. The single-domain FastAPI deployment described below remains the target architecture, not the current production topology.
+\textbf{Implementation status, September 2026.} The repository now targets unified FastAPI hosting at \url{https://seo-python-hub-437e0515.fastapicloud.dev}. Flutter Web is built with \texttt{/app/} as its base path, copied into \texttt{backend/app/flutter/web}, and served by FastAPI at \texttt{/app}. The Flutter build receives the API URL through the compile-time \texttt{API\_BASE\_URL} value.
 \end{notebox}
 
 \section{Product goals and architectural principles}
@@ -155,7 +155,7 @@ The visitor should be able to discover and read Python learning content without 
 
 \safeheading{Non-negotiable principles}
 \begin{enumerate}
-  \item \textbf{One backend boundary.} The target is one FastAPI application; until the Flutter shell is mounted below \texttt{/app}, Firebase Hosting and FastAPI Cloud remain separate deployments connected through the versioned API and CORS.
+  \item \textbf{One backend boundary.} FastAPI serves the public pages, API, and Flutter application under one origin; Firebase Hosting is no longer required for the production application.
   \item \textbf{Presentation is separate from business logic.} Jinja2 and Flutter may render the same concept differently, but they must not implement separate copies of the rules.
   \item \textbf{Public pages remain useful without JavaScript.} HTMX improves them; it must not be their only way to work.
   \item \textbf{URLs reveal ownership.} The path prefix is a routing contract, not an informal convention.
@@ -616,15 +616,15 @@ Generated output should be reproducible and disposable. Do not hand-edit generat
 \end{notebox}
 
 \safeheading{Production architecture}
-The current production topology is a split deployment. GitHub Actions builds Flutter Web from \texttt{frontend/} and deploys \texttt{frontend/build/web} to Firebase Hosting. FastAPI Cloud deploys the \texttt{backend/} application separately. The Flutter build uses:
+The current production topology is a unified FastAPI deployment. The build helper creates the Flutter Web artifact with the \texttt{/app/} base path and copies it into the backend package before FastAPI Cloud deployment:
 
 \begin{lstlisting}[caption={Current production build contract}]
-flutter build web --release \\
-  --dart-define=API_BASE_URL=https://seo-python-hub-437e0515.fastapicloud.dev
-firebase deploy --only hosting
+python scripts/build_flutter.py
+cd backend
+uv run fastapi deploy .
 \end{lstlisting}
 
-FastAPI must include the Firebase origin in \texttt{CORS\_ORIGINS}. Both services should be released from the same Git commit. The single-domain diagram below remains the planned end state after Flutter is mounted under FastAPI at \texttt{/app}.
+Both the backend and Flutter artifact are released from the same Git commit. FastAPI serves \texttt{/}, \texttt{/api/v1}, and \texttt{/app}; the \texttt{/app} fallback preserves Flutter client-side routes such as \texttt{/app/dashboard}.
 
 \begin{center}
 \resizebox{\linewidth}{!}{%

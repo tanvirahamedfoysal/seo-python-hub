@@ -12,7 +12,7 @@ The repository currently contains the operational foundation, not the complete f
 - Firebase Hosting deployment at `https://seo-python-hub.web.app`.
 - GitHub Actions for Flutter Hosting deployment and backend tests.
 
-The production services are currently split. Flutter calls FastAPI over HTTPS, so FastAPI Cloud must allow the Firebase origin through `CORS_ORIGINS`. Both services should be deployed from the same commit. The proposed single-domain `/app` architecture remains a later migration.
+The production application is served by FastAPI. The Flutter artifact is built with `/app/` as its base path, copied into `backend/app/flutter/web`, and served at `/app`; API calls remain under the same FastAPI origin. Firebase Hosting is no longer required for the production application.
 
 ## Frontend Architecture Summary
 

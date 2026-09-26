@@ -16,12 +16,16 @@ Operational endpoints:
 - `GET /ready` reports whether required services are available.
 - `GET /version` reports the deployed application version.
 
-The Flutter web app calls the FastAPI deployment through `API_BASE_URL`. Set
-`CORS_ORIGINS` in FastAPI Cloud to include `https://seo-python-hub.web.app`.
+The Flutter web app is served by the same FastAPI deployment at `/app`. Build
+it with `python scripts/build_flutter.py` before deploying the backend.
 
 ### Synchronization
 
-Pushes to `main` run backend tests and deploy the Flutter build through GitHub
+Pushes to `main` build the Flutter artifact and run backend tests through GitHub
 Actions. FastAPI Cloud must be connected to this repository and configured to
-deploy the `backend` directory. Both services should deploy from the same
-commit; the Flutter build receives the backend URL through `API_BASE_URL`.
+run the same build helper before deploying the `backend` directory. The
+production URLs are:
+
+- `https://seo-python-hub-437e0515.fastapicloud.dev/`
+- `https://seo-python-hub-437e0515.fastapicloud.dev/app`
+- `https://seo-python-hub-437e0515.fastapicloud.dev/docs`

@@ -40,8 +40,15 @@ def test_root_renders_backend_dummy_page() -> None:
     assert "SEO Python Hub backend" in response.text
 
 
-def test_flutter_launch_page_links_to_firebase() -> None:
+def test_flutter_app_is_served_by_fastapi() -> None:
     response = client.get("/app")
 
     assert response.status_code == 200
-    assert "https://seo-python-hub.web.app" in response.text
+    assert "<html" in response.text
+
+
+def test_flutter_deep_link_uses_flutter_entrypoint() -> None:
+    response = client.get("/app/dashboard")
+
+    assert response.status_code == 200
+    assert "flutter_bootstrap.js" in response.text
