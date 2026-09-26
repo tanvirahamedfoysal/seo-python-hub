@@ -19,6 +19,13 @@ Operational endpoints:
 The Flutter web app is served by the same FastAPI deployment at `/app`. Build
 it with `python scripts/build_flutter.py` before deploying the backend.
 
+The backend owns these production surfaces:
+
+- `/` for the server-rendered backend home page;
+- `/app` for Flutter Web, including client-side deep links;
+- `/api/v1` for versioned JSON endpoints;
+- `/health`, `/ready`, `/version`, and `/docs` for operations and inspection.
+
 ### Synchronization
 
 Pushes to `main` build the Flutter artifact and run backend tests through GitHub
@@ -29,3 +36,12 @@ production URLs are:
 - `https://seo-python-hub-437e0515.fastapicloud.dev/`
 - `https://seo-python-hub-437e0515.fastapicloud.dev/app`
 - `https://seo-python-hub-437e0515.fastapicloud.dev/docs`
+
+Manual deployment:
+
+```bash
+python scripts/build_flutter.py
+cd backend
+uv run pytest
+uv run fastapi deploy .
+```

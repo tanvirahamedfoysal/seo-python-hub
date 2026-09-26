@@ -57,7 +57,8 @@ git push origin main
 
 GitHub Actions validates the Flutter build and backend tests. FastAPI Cloud must
 be connected to this repository and configured to run the Flutter build helper
-before deploying the `backend` directory.
+before deploying the `backend` directory. The final production release is one
+FastAPI deployment, not a separate frontend deployment.
 
 ## Local development
 

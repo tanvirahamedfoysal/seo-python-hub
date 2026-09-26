@@ -1,17 +1,39 @@
-# frontend
+# Flutter Web frontend
 
-A new Flutter project.
+This directory contains the Flutter source project. In production, Flutter is
+not deployed as a separate site. It is built and embedded into the FastAPI
+package, then served at `/app`.
 
-## Getting Started
+## Local development
 
-This project is a starting point for a Flutter application.
+Start the backend first:
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+cd ../backend
+uv sync --dev
+uv run uvicorn app.main:app --reload
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Then run Flutter in this directory:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter pub get
+flutter run -d chrome --dart-define=API_BASE_URL=http://127.0.0.1:8000
+```
+
+## Production build
+
+From the repository root, use the shared build script:
+
+```bash
+python scripts/build_flutter.py
+```
+
+The script builds with `/app/` as the base path and copies the generated files
+to `backend/app/flutter/web`. FastAPI then serves the application at:
+
+```text
+https://seo-python-hub-437e0515.fastapicloud.dev/app
+```
+
+Do not edit files inside `build/`; they are generated output.

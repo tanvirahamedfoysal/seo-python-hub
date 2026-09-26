@@ -323,7 +323,7 @@ GitHub push to main
 	-> Flutter requests https://seo-python-hub-437e0515.fastapicloud.dev/api/v1/...
 ```
 
-Deploy both services from the same commit. The Flutter build must include the backend URL:
+Deploy the backend after building the Flutter artifact. The Flutter build must include the backend URL:
 
 ```bash
 flutter build web --release \
