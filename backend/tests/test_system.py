@@ -31,3 +31,17 @@ def test_api_prefix_is_available() -> None:
     response = client.get("/api/v1/topics")
 
     assert response.status_code == 501
+
+
+def test_root_renders_backend_dummy_page() -> None:
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert "SEO Python Hub backend" in response.text
+
+
+def test_flutter_launch_page_links_to_firebase() -> None:
+    response = client.get("/app")
+
+    assert response.status_code == 200
+    assert "https://seo-python-hub.web.app" in response.text

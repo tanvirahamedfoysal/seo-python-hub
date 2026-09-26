@@ -8,6 +8,7 @@ from app.routers.api.v1.stubs import (
 	web_components_router,
 )
 from app.routers.system import router as system_router
+from app.routers.web.pages import router as pages_router
 
 
 settings = get_settings()
@@ -22,6 +23,7 @@ app.add_middleware(
 )
 
 app.include_router(api_v1_router, prefix=settings.api_prefix)
+app.include_router(pages_router)
 app.include_router(public_router)
 app.include_router(web_components_router, prefix="/web-components")
 app.include_router(system_router)

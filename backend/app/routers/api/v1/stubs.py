@@ -165,7 +165,6 @@ for _method, _paths in _ROUTES.items():
 
 
 for _path in [
-    "/",
     "/roadmap",
     "/topics",
     "/topics/{slug}",
