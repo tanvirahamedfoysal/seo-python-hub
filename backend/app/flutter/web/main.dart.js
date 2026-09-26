@@ -58343,7 +58343,7 @@ Tz(){this.aI(new A.a3A(this))},
 O(a){var s,r=this,q=null,p=A.aC(a).ax,o=p.y2
 p=o==null?p.c:o
 r.a.toString
-o=A.a92("SEO Python Hub is updated",q)
+o=A.a92("SEO Python Hub",q)
 s=r.f
 s===$&&A.b()
 s=A.z2(A.akh(A.d([B.L4,new A.n7(s,new A.a3B(),q,t.wY),B.H_,B.L2,A.a92(""+r.d,A.aC(a).ok.e)],t.nA),B.pg),q,q)

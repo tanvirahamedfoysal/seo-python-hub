@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo is updated fylly',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const MyHomePage(title: 'SEO Python Hub is updated'),
+      home: const MyHomePage(title: 'SEO Python Hub'),
     );
   }
 }
