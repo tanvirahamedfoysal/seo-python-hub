@@ -1,796 +1,236 @@
 \documentclass[11pt,a4paper]{article}
 
-% A standalone, conservative preamble designed for reliable A4 pagination.
-\usepackage[a4paper,top=22mm,bottom=22mm,left=22mm,right=22mm,headheight=14pt]{geometry}
+\usepackage[a4paper,margin=25mm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{microtype}
 \usepackage{parskip}
-\usepackage{setspace}
 \usepackage{xcolor}
-\usepackage{graphicx}
 \usepackage{booktabs}
-\usepackage{array}
 \usepackage{tabularx}
-\usepackage{longtable}
-\usepackage{makecell}
 \usepackage{enumitem}
-\usepackage{listings}
-\usepackage[most]{tcolorbox}
-\usepackage{tikz}
-\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,calc}
-\usepackage{float}
-\usepackage{placeins}
-\usepackage{needspace}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
-\usepackage{titlesec}
 \usepackage{hyperref}
-\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
 
 \definecolor{ink}{HTML}{1F2937}
-\definecolor{muted}{HTML}{4B5563}
 \definecolor{blue}{HTML}{1D4ED8}
-\definecolor{bluewash}{HTML}{EFF6FF}
-\definecolor{greenwash}{HTML}{ECFDF5}
-\definecolor{amberwash}{HTML}{FFFBEB}
-\definecolor{line}{HTML}{CBD5E1}
+\definecolor{muted}{HTML}{4B5563}
 \definecolor{codebg}{HTML}{F8FAFC}
-\definecolor{codekw}{HTML}{1D4ED8}
-\definecolor{codecomment}{HTML}{64748B}
 
-\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,pdftitle={Python Learning Hub: Detailed Architecture and Implementation Plan},pdfauthor={OpenAI}}
-\urlstyle{same}
-\setstretch{1.06}
-\setlength{\emergencystretch}{3em}
-\setlist{nosep,leftmargin=*,itemsep=2pt}
-\setlist[itemize]{label=\textcolor{blue}{\small\textbullet}}
-
-\pagestyle{fancy}
-\fancyhf{}
-\lhead{\small\textcolor{muted}{Python Learning Hub}}
-\rhead{\small\textcolor{muted}{Architecture plan}}
-\cfoot{\small\textcolor{muted}{\thepage\,/\,\pageref{LastPage}}}
-\renewcommand{\headrulewidth}{0.3pt}
-\renewcommand{\footrulewidth}{0pt}
-
-\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.7em}{}
-\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.7em}{}
-\titleformat{\subsubsection}{\normalsize\bfseries\color{blue}}{\thesubsubsection}{0.7em}{}
-\titlespacing*{\section}{0pt}{2.0ex plus .5ex minus .2ex}{1.0ex}
-\titlespacing*{\subsection}{0pt}{1.5ex plus .4ex minus .2ex}{.7ex}
-\titlespacing*{\subsubsection}{0pt}{1.0ex plus .3ex minus .1ex}{.4ex}
-
-\lstdefinestyle{safe}{
-  backgroundcolor=\color{codebg},
-  basicstyle=\ttfamily\small,
-  keywordstyle=\color{codekw}\bfseries,
-  commentstyle=\color{codecomment}\itshape,
-  stringstyle=\color{purple!70!black},
-  numbers=none,
-  frame=single,
-  rulecolor=\color{line},
-  framerule=.35pt,
-  breaklines=true,
-  breakatwhitespace=false,
-  columns=fullflexible,
-  keepspaces=true,
-  showstringspaces=false,
-  tabsize=2,
-  xleftmargin=4pt,
-  xrightmargin=4pt,
-  aboveskip=7pt,
-  belowskip=7pt
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  pdftitle={Python Learning Hub Project Proposal},
+  pdfauthor={Python Learning Hub Team}
 }
-\lstset{style=safe}
+\urlstyle{same}
+\setlist{leftmargin=*,itemsep=2pt}
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  frame=single,
+  breaklines=true,
+  showstringspaces=false
+}
 
-\newcommand{\tightcode}[2][]{\begin{lstlisting}[#1]\small #2\end{lstlisting}}
-\newcommand{\pathcode}[1]{\texttt{\detokenize{#1}}}
-\newcommand{\safeheading}[1]{\needspace{5\baselineskip}\subsection{#1}}
-\newcommand{\smallheading}[1]{\needspace{4\baselineskip}\subsubsection{#1}}
-\newcommand{\blankpage}{\clearpage}
 
-\newtcolorbox{keybox}{enhanced,breakable,colback=bluewash,colframe=blue!45!black,boxrule=.45pt,arc=2pt,left=8pt,right=8pt,top=7pt,bottom=7pt}
-\newtcolorbox{notebox}{enhanced,breakable,colback=amberwash,colframe=orange!55!black,boxrule=.45pt,arc=2pt,left=8pt,right=8pt,top=7pt,bottom=7pt}
-\newtcolorbox{successbox}{enhanced,breakable,colback=greenwash,colframe=green!45!black,boxrule=.45pt,arc=2pt,left=8pt,right=8pt,top=7pt,bottom=7pt}
-
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
-\renewcommand{\arraystretch}{1.18}
 
 \begin{document}
-
-\begin{titlepage}
-\thispagestyle{empty}
-\vspace*{14mm}
-\begin{center}
-  {\color{blue}\rule{0.22\linewidth}{2pt}}\\[10mm]
-  {\Huge\bfseries\color{ink} Python Learning Hub}\\[4mm]
-  {\LARGE\color{muted} Detailed architecture and implementation plan}\\[10mm]
-  \begin{tcolorbox}[width=.86\linewidth,colback=bluewash,colframe=blue!35!black,boxrule=.5pt,arc=3pt]
-  \centering\large
-  A practical plan for a single-domain learning platform using FastAPI, Jinja2, HTMX, Flutter Web, PostgreSQL, and shared application services.
-  \end{tcolorbox}
-  \vfill
-  \begin{tabular}{rl}
-    \textbf{Primary goal:} & crawlable public learning content plus a rich authenticated app\\
-    \textbf{Backend boundary:} & one FastAPI application\\
-    \textbf{Public pages:} & server-rendered HTML with Jinja2 and selective HTMX\\
-    \textbf{Application pages:} & Flutter Web under \texttt{/app}\\
-    \textbf{Data layer:} & shared services and repositories over PostgreSQL\\
-  \end{tabular}
-  \vfill
-  {\small Optimized standalone edition \textbullet\ A4 layout \textbullet\ September 2026}
-\end{center}
-\end{titlepage}
-
 \tableofcontents
+\vspace{1em}
+
 \clearpage
 
-\section{Executive summary}
+\section{Introduction}
 
-\begin{keybox}
-The cleanest mental model is \textbf{one product with two experiences}: Jinja2 is the public, search-friendly website; Flutter is the authenticated application. FastAPI remains the single HTTP entry point, and both experiences use the same business services and repositories.
-\end{keybox}
+Python is used in software development, data science, automation, web development, and education. However, learning resources are often fragmented across many websites and do not always provide a clear progression from beginner concepts to practical projects.
 
-This plan turns that model into an implementable repository, URL contract, request flow, deployment process, and staged roadmap. It intentionally keeps the boundaries strict:
+\textbf{Python Learning Hub} will be a structured learning and community platform that combines a guided Python roadmap, searchable educational content, practical examples, learner progress, bookmarks, and discussions. Search-engine-friendly public pages will make the content easy to discover, while a Flutter Web application will support richer authenticated workflows.
 
-\begin{itemize}
-  \item Public, indexable content lives at ordinary URLs such as \texttt{/topics/python-functions}.
-  \item Small authenticated enhancements use HTMX endpoints under \texttt{/web-components/...}.
-  \item Rich authenticated workflows live below \texttt{/app/...} and are rendered by Flutter Web.
-  \item JSON endpoints live below \texttt{/api/v1/...}; WebSocket endpoints, if needed later, live below \texttt{/ws/...}.
-  \item Neither frontend talks directly to the database. Both call shared application services.
-\end{itemize}
+\section{Aim}
 
-\begin{notebox}
-\textbf{Implementation status, September 2026.} The repository now targets unified FastAPI hosting at \url{https://seo-python-hub-437e0515.fastapicloud.dev}. Flutter Web is built with \texttt{/app/} as its base path, copied into \texttt{backend/app/flutter/web}, and served by FastAPI at \texttt{/app}. The Flutter build receives the API URL through the compile-time \texttt{API\_BASE\_URL} value.
-\end{notebox}
+The aim of this project is to design and implement a lightweight, SEO-optimized Python learning platform that provides structured education and demonstrates a maintainable modern web architecture.
 
-\section{Product goals and architectural principles}
+\section{Objectives}
 
-\safeheading{What the product should feel like}
-The visitor should be able to discover and read Python learning content without an account. A signed-in learner should be able to continue into a more interactive application for progress, bookmarks, statistics, discussions, notifications, and other stateful features.
+The project will:
 
-\safeheading{Non-negotiable principles}
 \begin{enumerate}
-  \item \textbf{One backend boundary.} FastAPI serves the public pages, API, and Flutter application under one origin; a separate frontend hosting service is not required for production.
-  \item \textbf{Presentation is separate from business logic.} Jinja2 and Flutter may render the same concept differently, but they must not implement separate copies of the rules.
-  \item \textbf{Public pages remain useful without JavaScript.} HTMX improves them; it must not be their only way to work.
-  \item \textbf{URLs reveal ownership.} The path prefix is a routing contract, not an informal convention.
-  \item \textbf{Build the smallest useful version first.} Redis, WebSockets, chat, and advanced moderation are later capabilities, not prerequisites for the public learning site.
+  \item provide a beginner-to-advanced Python learning roadmap;
+  \item publish clear topics, tutorials, guides, examples, categories, and tags;
+  \item support public search and related-content discovery;
+  \item provide authentication, progress tracking, bookmarks, and discussions;
+  \item expose a documented versioned API for interactive application features;
+  \item implement semantic HTML, clean URLs, metadata, canonical links, sitemap, and \texttt{robots.txt};
+  \item provide a responsive and accessible user experience;
+  \item evaluate the system through functional, SEO, performance, and usability testing.
 \end{enumerate}
 
-\safeheading{Recommended technology choices}
-\begin{tabularx}{\linewidth}{@{}P{.24\linewidth}YY@{}}
+\section{Scope}
+
+\subsection{Core release}
+
+The first release will include approximately 15--25 Python topics, 5--10 tutorials or guides, and selected introductions to libraries and frameworks such as NumPy, Pandas, FastAPI, Django, asyncpg, and Requests. It will include:
+
+\begin{itemize}
+  \item public learning pages and roadmap navigation;
+  \item categories, tags, slugs, breadcrumbs, related content, and search;
+  \item user registration and secure authentication;
+  \item topic progress and bookmarks;
+  \item public discussions with authenticated participation;
+  \item basic administration and SEO metadata management.
+\end{itemize}
+
+\subsection{Future or out of scope}
+
+Quizzes, advanced statistics, moderation dashboards, Redis caching, WebSockets, chat, media uploads, and expanded library coverage will be introduced incrementally. Payments, video hosting, live classes, native mobile applications, AI tutoring, online code execution, and guaranteed search rankings are outside the initial scope.
+
+\section{Users}
+
+\begin{tabularx}{\linewidth}{@{}p{.22\linewidth}X@{}}
 \toprule
-\textbf{Area} & \textbf{Choice} & \textbf{Reason}\\
+\textbf{User} & \textbf{Primary capabilities}\\
 \midrule
-HTTP backend & FastAPI & Clear routing, dependency injection, validation, async support, and API documentation.\\
-Public rendering & Jinja2 & Fast initial HTML, crawlability, and simple server-side composition.\\
-Progressive interaction & HTMX & Small page updates without turning every public page into a single-page app.\\
-Application UI & Flutter Web & Rich client-side state, navigation, dashboards, charts, and complex interaction.\\
-Database & PostgreSQL & Strong relational model for users, content, progress, bookmarks, and moderation.\\
-Persistence boundary & Repositories plus services & Keeps SQL and business decisions out of route handlers and widgets.\\
+Viewer & Browse and search public learning content without authentication.\\
+Learner & Register, track progress, save bookmarks, and participate in discussions.\\
+Administrator & Manage users, content, SEO metadata, discussions, reports, and statistics.\\
 \bottomrule
 \end{tabularx}
 
-\section{The two-experience model}
+\section{System architecture}
 
-\safeheading{Public website: Jinja2 plus HTMX}
-Use server-rendered pages for content that people may discover through search or share directly:
-
-\begin{itemize}
-  \item home page, roadmap, categories, tags, tutorials, guides, and topic pages;
-  \item public discussion pages and useful search results;
-  \item explanatory content, examples, exercises, and related-topic navigation;
-  \item simple actions such as bookmark, mark complete, reply, or filter, enhanced with HTMX when appropriate.
-\end{itemize}
-
-\safeheading{Application: Flutter Web}
-Use Flutter under \texttt{/app} for workflows whose value comes from client-side state and rich interaction:
+FastAPI will be the single application boundary and will own the public website, API, and Flutter application. The platform will use two presentation layers:
 
 \begin{itemize}
-  \item login, dashboard, profile, progress, bookmarks, and activity history;
-  \item learner statistics, charts, filters, and multi-step workflows;
-  \item richer discussions, notifications, chat, and administration when those features justify it.
+  \item \textbf{Jinja2 and HTMX} for crawlable public pages and small progressive interactions;
+  \item \textbf{Flutter Web} for authenticated dashboards and richer interactive workflows.
 \end{itemize}
 
-\begin{notebox}
-Do not force every feature to exist in both frontends. A topic can have an SEO-friendly public page and an API representation for Flutter without requiring two separate user interfaces for every action.
-\end{notebox}
+Both layers will use shared services and repositories. Neither frontend will access PostgreSQL directly.
 
-\clearpage
-
-\safeheading{URL contract}
-\begin{longtable}{@{}P{.28\linewidth}P{.24\linewidth}P{.38\linewidth}@{}}
-\caption{Stable URL ownership contract}\label{tab:url-contract}\\
-\toprule
-\textbf{Prefix or example} & \textbf{Owner} & \textbf{Purpose}\\
-\midrule
-\endfirsthead
-\toprule
-\textbf{Prefix or example} & \textbf{Owner} & \textbf{Purpose}\\
-\midrule
-\endhead
-\bottomrule
-\endfoot
-\texttt{/}, \texttt{/roadmap} & Jinja2 & Public landing and roadmap pages.\\
-\texttt{/topics/\{slug\}} & Jinja2 & Crawlable topic and tutorial content.\\
-\texttt{/categories/\{slug\}} & Jinja2 & Category landing pages.\\
-\texttt{/discussions/\{id\}} & Jinja2 & Public discussion pages.\\
-\texttt{/search} & Jinja2 & Search form and server-rendered results.\\
-\texttt{/web-components/...} & HTMX/Jinja2 & Small HTML fragments returned to public pages.\\
-\texttt{/app}, \texttt{/app/dashboard} & Flutter Web & Authenticated client-side application routes.\\
-\texttt{/api/v1/...} & FastAPI JSON & Data and mutation contract for Flutter and future clients.\\
-\texttt{/ws/...} & FastAPI WebSocket & Optional real-time features introduced later.\\
-\end{longtable}
-
-\clearpage
-
-\section{End-to-end architecture}
-
-\safeheading{Logical architecture}
-\begin{center}
-\resizebox{\linewidth}{!}{%
-\begin{tikzpicture}[
-  node distance=8mm and 10mm,
-  box/.style={draw=blue!55!black,rounded corners=2pt,fill=bluewash,align=center,minimum width=30mm,minimum height=10mm,font=\small},
-  store/.style={draw=green!45!black,rounded corners=2pt,fill=greenwash,align=center,minimum width=34mm,minimum height=10mm,font=\small},
-  arrow/.style={-{Latex[length=2mm]},thick,draw=muted}
-]
-\node[box] (browser) {Browser\\one domain};
-\node[box,below=of browser] (fastapi) {FastAPI\\routing, auth, validation};
-\node[box,below left=of fastapi] (web) {Jinja2\\public HTML};
-\node[box,below=of fastapi] (htmx) {HTMX\\HTML fragments};
-\node[box,below right=of fastapi] (api) {REST API\\JSON};
-\node[box,below=of api] (flutter) {Flutter Web\\/app/*};
-\node[store,below=13mm of htmx] (services) {Shared services\\Topic, User, Progress};
-\node[store,below=of services] (repos) {Repositories\\queries and persistence};
-\node[store,below=of repos] (db) {PostgreSQL};
-\draw[arrow] (browser)--(fastapi);
-\draw[arrow] (fastapi)--(web);
-\draw[arrow] (fastapi)--(htmx);
-\draw[arrow] (fastapi)--(api);
-\draw[arrow] (api)--(flutter);
-\draw[arrow] (web)--(services);
-\draw[arrow] (htmx)--(services);
-\draw[arrow] (api)--(services);
-\draw[arrow] (services)--(repos);
-\draw[arrow] (repos)--(db);
-\end{tikzpicture}}
-\end{center}
-
-\safeheading{What FastAPI manages}
-FastAPI is the composition point. It mounts routers, configures dependencies, serves templates and static files, exposes JSON endpoints, and returns the Flutter entry document for routes below \texttt{/app}. The route handlers should remain thin: authenticate, validate, call a service, and choose a response representation.
-
-\safeheading{A request to a public topic}
-\begin{enumerate}
-  \item The browser requests \texttt{GET /topics/python-functions}.
-  \item FastAPI dispatches to the public topic router.
-  \item The router calls \texttt{TopicService.get\_by\_slug(...)}.
-  \item The service calls \texttt{TopicRepository}; the repository reads PostgreSQL.
-  \item The router passes the result to Jinja2 and returns complete HTML.
-\end{enumerate}
-
-\safeheading{A request from Flutter}
-\begin{enumerate}
-  \item Flutter requests \texttt{GET /api/v1/progress} with the authenticated session.
-  \item FastAPI resolves the current user and validates the request.
-  \item The API router calls \texttt{ProgressService}.
-  \item The service uses the same repository layer and returns a response schema.
-  \item FastAPI serializes JSON; Flutter updates its state.
-\end{enumerate}
-
-\safeheading{A transition from Flutter to public content}
-When a learner selects an SEO-oriented topic, Flutter can navigate the browser to \path{/topics/python-asyncio}. FastAPI then returns the public Jinja2 page. The learner has moved between two presentations without moving between domains or duplicating the content source.
-
-\FloatBarrier
-
-\section{Repository structure}
-
-\safeheading{Recommended tree}
-\begin{lstlisting}[language={},caption={Repository layout}]
-python-learning-hub/
-|-- backend/
-|   |-- app/
-|   |   |-- main.py
-|   |   |-- config.py
-|   |   |-- dependencies.py
-|   |   |-- routers/
-|   |   |   |-- web/
-|   |   |   |   |-- pages/
-|   |   |   |   |   |-- home.py
-|   |   |   |   |   |-- roadmap.py
-|   |   |   |   |   |-- topics.py
-|   |   |   |   |   `-- search.py
-|   |   |   |   `-- components/
-|   |   |   |       |-- progress.py
-|   |   |   |       |-- bookmarks.py
-|   |   |   |       `-- comments.py
-|   |   |   |   |-- api/v1/
-|   |   |   |   |   |-- auth.py
-|   |   |   |   |   |-- topics.py
-|   |   |   |   |   |-- progress.py
-|   |   |   |   |   |-- bookmarks.py
-|   |   |   |   |   `-- users.py
-|   |   |   |   `-- websocket/chat.py
-|   |   |   |-- services/
-|   |   |   |-- repositories/
-|   |   |   |-- schemas/
-|   |   |   |-- models/
-|   |   |   |-- templates/
-|   |   |   |-- static/
-|   |   |   `-- flutter/web/          # compiled Flutter output only
-|   |-- migrations/
-|   `-- pyproject.toml
-|-- frontend/                    # Dart source project
-|-- scripts/build_flutter.py
-|-- README.md
-`-- .env.example
+\begin{lstlisting}
+Browser
+  |
+  v
+FastAPI
+  |-- Jinja2 + HTMX public pages: /
+  |-- Versioned JSON API: /api/v1
+  |-- Flutter Web application: /app
+  `-- Health and documentation: /health, /ready, /docs
+       |
+       `-- PostgreSQL through asyncpg
 \end{lstlisting}
 
-\begin{notebox}
-Keep Flutter source in \texttt{frontend/}. Copy only its compiled \texttt{build/web} artifact into \texttt{backend/app/flutter/web}. This prevents Python tooling and Dart tooling from becoming one tangled project.
-\end{notebox}
+\subsection{Current deployment model}
 
-\safeheading{Responsibilities by directory}
-\begin{longtable}{@{}P{.29\linewidth}P{.60\linewidth}@{}}
-\caption{Directory responsibilities}\label{tab:directories}\\
-\toprule
-\textbf{Directory} & \textbf{Responsibility}\cr
-\midrule
-\endfirsthead
-\toprule
-\textbf{Directory} & \textbf{Responsibility}\cr
-\midrule
-\endhead
-\bottomrule
-\endfoot
-\texttt{routers/} & HTTP and WebSocket entry points; no raw SQL.\\
-\texttt{services/} & Business rules, orchestration, authorization decisions, and transaction boundaries.\\
-\texttt{repositories/} & Database queries and persistence operations.\\
-\texttt{schemas/} & Request and response contracts; keep API schemas separate from database records when useful.\\
-\texttt{templates/} & Full pages and reusable HTML fragments.\\
-\texttt{static/} & CSS, browser JavaScript, icons, and public images.\\
-\texttt{flutter/web/} & Generated Flutter Web deployment files; do not edit by hand.\\
-\texttt{migrations/} & Versioned PostgreSQL schema changes.\\
-\texttt{scripts/} & Repeatable build, seed, export, and deployment helpers.\\
-\texttt{tests/} & Unit, integration, route, API, and browser-facing tests.\\
-\end{longtable}
+The Flutter source is kept in \texttt{frontend/}. The build helper creates a Web artifact with \texttt{/app/} as its base path and copies it into \texttt{backend/app/flutter/web}. FastAPI then serves the artifact at \texttt{/app}, including client-side routes such as \texttt{/app/dashboard}. The production application therefore uses one FastAPI origin:
 
-\section{FastAPI composition and routing}
-
-\safeheading{Application composition}
-The central module should make the routing boundary obvious. The following is intentionally schematic; exact framework versions and database libraries can be selected during implementation.
-
-\begin{lstlisting}[language=Python,caption={Composition point in \texttt{main.py}}]
-from fastapi import FastAPI
-
-from app.routers.api.v1 import router as api_router
-from app.routers.web.pages import router as web_router
-from app.routers.web.components import router as component_router
-from app.flutter import mount_flutter_web
-
-app = FastAPI(title="Python Learning Hub")
-
-app.include_router(web_router)
-app.include_router(component_router, prefix="/web-components")
-app.include_router(api_router, prefix="/api/v1")
-mount_flutter_web(app, prefix="/app")
+\begin{lstlisting}
+https://seo-python-hub-437e0515.fastapicloud.dev/
+https://seo-python-hub-437e0515.fastapicloud.dev/app
+https://seo-python-hub-437e0515.fastapicloud.dev/api/v1
 \end{lstlisting}
 
-\safeheading{Flutter fallback behavior}
-Flutter uses client-side navigation. A request to \texttt{/app/dashboard} therefore needs the same Flutter entry document as \texttt{/app/}. The mounting helper should:
+\section{Technology stack}
 
-\begin{enumerate}
-  \item serve real generated assets such as JavaScript, icons, and canvaskit files;
-  \item return Flutter's \texttt{index.html} for an application route that is not a physical asset;
-  \item never catch \texttt{/api}, public pages, or HTMX endpoints;
-  \item use an explicit prefix so a missing asset cannot silently become a public HTML page.
-\end{enumerate}
-
-\begin{lstlisting}[language=Python,caption={Conceptual Flutter route fallback}]
-@router.get("/{path:path}")
-async def flutter_route(path: str):
-    requested = flutter_root / path
-    if requested.is_file():
-        return FileResponse(requested)
-    return FileResponse(flutter_root / "index.html")
-\end{lstlisting}
-
-\begin{notebox}
-The fallback is deliberately scoped below \texttt{/app}. A global catch-all route is a common source of broken public pages, incorrect 404 behavior, and difficult debugging.
-\end{notebox}
-
-\section{Shared services and data flow}
-
-\safeheading{One concept, two representations}
-For a topic with slug \texttt{python-functions}, expose two representations:
-
-\begin{tabularx}{\linewidth}{@{}P{.27\linewidth}P{.30\linewidth}Y@{}}
+\begin{tabularx}{\linewidth}{@{}p{.27\linewidth}X@{}}
 \toprule
-\textbf{Request} & \textbf{Response} & \textbf{Shared path}\\
+\textbf{Area} & \textbf{Technology or approach}\\
 \midrule
-\path{GET /topics/python-functions} & Complete HTML & Topic router $\rightarrow$ TopicService $\rightarrow$ TopicRepository\\
-\path{GET /api/v1/topics/python-functions} & JSON & API router $\rightarrow$ TopicService $\rightarrow$ TopicRepository\\
-\texttt{POST /web-components/...} & HTML fragment & Component router $\rightarrow$ ProgressService $\rightarrow$ repository\\
+Backend & Python, FastAPI, Uvicorn, Jinja2, HTMX\\
+Frontend & Flutter Web and semantic server-rendered HTML\\
+Database & PostgreSQL with asynchronous \texttt{asyncpg} queries\\
+Migrations & Alembic or versioned SQL migrations\\
+Caching & Redis for selected read-heavy and temporary operations\\
+API & Versioned JSON endpoints under \texttt{/api/v1}\\
+Deployment & FastAPI Cloud with embedded Flutter Web artifact\\
 \bottomrule
 \end{tabularx}
 
-\safeheading{Service responsibilities}
-Services should answer product questions rather than framework questions. Examples include:
+The project will keep database access in repositories and business rules in services. Request and response schemas will define API contracts. The database remains the durable source of truth; Redis will not replace PostgreSQL.
 
-\begin{itemize}
-  \item \texttt{TopicService}: locate, publish, search, and relate learning content;
-  \item \texttt{AuthService}: register, authenticate, rotate sessions, and resolve account state;
-  \item \texttt{ProgressService}: mark a lesson complete, calculate progress, and record activity;
-  \item \texttt{BookmarkService}: add, remove, and list saved items;
-  \item \texttt{DiscussionService}: create, edit, moderate, and retrieve discussion content.
-\end{itemize}
+\section{Main interfaces}
 
-\clearpage
+Public HTML routes will include:
 
-\safeheading{Thin route handler example}
-\begin{lstlisting}[language=Python,caption={A public route that delegates to a service}]
-@router.get("/topics/{slug}", response_class=HTMLResponse)
-async def topic_page(request: Request, slug: str, service: TopicService = Depends()):
-    topic = await service.get_published_by_slug(slug)
-    if topic is None:
-        raise HTTPException(status_code=404)
-    return templates.TemplateResponse(
-        request=request,
-        name="topics/detail.html",
-        context={"topic": topic},
-    )
+\begin{lstlisting}
+GET /                 Home page
+GET /roadmap          Learning roadmap
+GET /topics/{slug}    Topic page
+GET /tutorials        Tutorial listing
+GET /guides           Guide listing
+GET /search           Search page
+GET /discussions      Public discussions
+GET /sitemap.xml      Published-page sitemap
+GET /robots.txt       Crawler rules
 \end{lstlisting}
 
-\safeheading{Database direction}
-Start with a relational schema that reflects the learning domain. A practical first set is:
+The first API release will prioritize authentication, topics, roadmap, progress, bookmarks, search, discussions, and system health. The Flutter client will use the API through the same FastAPI origin in production.
 
-\begin{longtable}{@{}P{.25\linewidth}P{.65\linewidth}@{}}
-\caption{Initial domain tables}\label{tab:tables}\\
-\toprule
-\textbf{Table} & \textbf{Purpose and key relationships}\cr
-\midrule
-\endfirsthead
-\toprule
-\textbf{Table} & \textbf{Purpose and key relationships}\cr
-\midrule
-\endhead
-\bottomrule
-\endfoot
-\texttt{users} & Identity, account status, role, and timestamps.\\
-\texttt{topics} & Slug, title, body, summary, category, difficulty, publication state, and SEO metadata.\\
-\texttt{roadmap\_nodes} & Ordered learning path and prerequisite relationships.\\
-\texttt{progress} & User-to-topic completion state, percentage, and last activity.\\
-\texttt{bookmarks} & User-to-topic saved items with uniqueness constraint.\\
-\texttt{discussions} & Public questions or conversations associated with a topic.\\
-\texttt{discussion\_replies} & Replies, authorship, moderation state, and timestamps.\\
-\texttt{activity\_events} & Optional append-only learning events for statistics.\\
-\end{longtable}
+\section{SEO and accessibility}
 
-\section{Templates, static assets, and accessibility}
+Public pages will use semantic HTML and server-side rendering. Each indexable page should provide a descriptive title, meta description, one primary heading, canonical URL, meaningful internal links, breadcrumbs where appropriate, and structured data only when accurate. The system will provide a sitemap, crawler rules, useful error pages, responsive layouts, and accessible markup.
 
-\safeheading{Template organization}
-\begin{lstlisting}[caption={Template tree}]
-templates/
-|-- base.html
-|-- home.html
-|-- roadmap.html
-|-- topics/
-|   |-- detail.html
-|   `-- list.html
-|-- discussions/detail.html
-|-- search/results.html
-`-- components/
-    |-- progress_button.html
-    |-- bookmark_button.html
-    |-- search_results.html
-    `-- flash_message.html
-\end{lstlisting}
+\section{Implementation method}
 
-\safeheading{Rendering rules}
-\begin{itemize}
-  \item Keep page-level templates responsible for layout and metadata.
-  \item Keep component templates small enough to return as an HTMX response.
-  \item Use semantic headings in order; do not use font size as a substitute for document structure.
-  \item Provide visible focus states, keyboard access, labels for form controls, and useful empty/error states.
-  \item Treat user-authored discussion content as untrusted; escape by default and sanitize only through a deliberate policy.
-\end{itemize}
-
-\section{Authentication and authorization}
-
-\safeheading{Recommended first approach}
-Use a secure, same-site session cookie for the browser-facing product. FastAPI dependencies can resolve the current user for both HTML routes and API routes. If a separate mobile client is required later, add a token-based API flow without changing the service boundary.
+Development will proceed in stages:
 
 \begin{enumerate}
-  \item Hash passwords with a modern password-hashing library; never store plaintext passwords.
-  \item Set cookies as Secure in production, HttpOnly, and an intentional SameSite policy.
-  \item Add CSRF protection to cookie-authenticated state-changing browser requests, including HTMX requests.
-  \item Check authorization in services or dedicated policy functions, not only in templates.
-  \item Make admin and moderation roles explicit and auditable.
+  \item stabilize configuration, health endpoints, routing, tests, and deployment;
+  \item add PostgreSQL migrations, repositories, schemas, and services;
+  \item implement public content, search, categories, tags, and SEO metadata;
+  \item implement authentication, progress, bookmarks, and discussions;
+  \item connect Flutter screens to completed API contracts;
+  \item add administration, quizzes, analytics, Redis, and real-time features incrementally.
 \end{enumerate}
 
-\begin{lstlisting}[language=Python,caption={Conceptual dependency usage}]
-@router.post("/progress/{topic_id}")
-async def mark_complete(
-    topic_id: int,
-    user: CurrentUser,
-    service: ProgressService = Depends(),
-):
-    result = await service.mark_complete(user.id, topic_id)
-    return templates.TemplateResponse(
-        request=request,
-        name="components/progress_button.html",
-        context={"progress": result},
-    )
-\end{lstlisting}
+Every feature should be implemented through the shared service layer before adding separate Jinja2, HTMX, or Flutter representations.
 
-\section{Flutter Web boundary}
+\section{Deployment workflow}
 
-\safeheading{Flutter source and generated output}
-The Dart project remains a normal Flutter project. It owns widgets, navigation, state management, API clients, and application styling. The backend owns the compiled artifact only.
+From the repository root:
 
-\clearpage
-
-\begin{lstlisting}[caption={Development and production relationship}]
-frontend/                          # source, edited by developers
-        |
-        | flutter build web
-        v
-frontend/build/web/                # generated deployment artifact
-        |
-        | copy during build
-        v
-backend/app/flutter/web/          # served below /app
-\end{lstlisting}
-
-\safeheading{Flutter route examples}
-\begin{tabularx}{\linewidth}{@{}P{.38\linewidth}Y@{}}
-\toprule
-\textbf{Route} & \textbf{Screen responsibility}\\
-\midrule
-\texttt{/app/login} & Sign-in and account recovery.\\
-\texttt{/app/dashboard} & Continue learning, summary progress, and recent activity.\\
-\texttt{/app/profile} & Account settings and preferences.\\
-\texttt{/app/progress} & Detailed roadmap and topic completion state.\\
-\texttt{/app/bookmarks} & Saved topics and guides.\\
-\texttt{/app/discussions} & Rich discussion participation if the feature needs it.\\
-\texttt{/app/admin} & Moderation and content administration, protected by role.\\
-\bottomrule
-\end{tabularx}
-
-\safeheading{API client discipline}
-Flutter should use a small typed API client. Keep endpoint paths, serialization, error mapping, and authentication behavior in one place. Widgets should not assemble raw URLs or interpret database-shaped responses directly.
-
-\section{Search engine optimization}
-
-\safeheading{Public-page checklist}
-Every indexable page should have:
-
-\begin{itemize}
-  \item a unique, descriptive title and meta description;
-  \item one clear H1 and a logical heading hierarchy;
-  \item canonical URL handling;
-  \item meaningful internal links between related topics;
-  \item server-rendered content in the initial response;
-  \item useful 404 and no-result pages;
-  \item structured data only when it accurately describes the page;
-  \item a sitemap and robots policy that reflect publication state.
-\end{itemize}
-
-\begin{successbox}
-The SEO rule is simple: if a page is valuable to someone who has not signed in, make it a real Jinja2 URL. Flutter can link to it, but search engines should not need to boot Flutter to read it.
-\end{successbox}
-
-\clearpage
-
-\section{Development and deployment workflow}
-
-\safeheading{Local development}
-Run the backend and Flutter source project independently during development. The public website and API can run on FastAPI while Flutter uses its normal development server. Configure the API base URL so the Flutter client can call the local backend.
-
-\begin{lstlisting}[caption={Conceptual local workflow}]
-Terminal A: backend development server on localhost:8000
-Terminal B: Flutter development server
-Database: local PostgreSQL instance or development container
-\end{lstlisting}
-
-\safeheading{Build script responsibilities}
-Create \texttt{scripts/build\_flutter.py} or an equivalent task runner that:
-
-\begin{enumerate}
-  \item runs the approved Flutter Web build command;
-  \item validates that \texttt{build/web/index.html} exists;
-  \item replaces the generated backend Flutter directory in a controlled way;
-  \item copies the build artifact into \texttt{backend/app/flutter/web};
-  \item reports the build hash and output path;
-  \item fails before deployment if required files are missing.
-\end{enumerate}
-
-\begin{notebox}
-Generated output should be reproducible and disposable. Do not hand-edit generated JavaScript or put secrets in Flutter assets; Web assets are publicly downloadable.
-\end{notebox}
-
-\safeheading{Production architecture}
-The current production topology is a unified FastAPI deployment. The build helper creates the Flutter Web artifact with the \texttt{/app/} base path and copies it into the backend package before FastAPI Cloud deployment:
-
-\begin{lstlisting}[caption={Current production build contract}]
+\begin{lstlisting}
 python scripts/build_flutter.py
 cd backend
+uv run pytest
 uv run fastapi deploy .
 \end{lstlisting}
 
-Both the backend and Flutter artifact are released from the same Git commit. FastAPI serves \texttt{/}, \texttt{/api/v1}, and \texttt{/app}; the \texttt{/app} fallback preserves Flutter client-side routes such as \texttt{/app/dashboard}.
+The build helper runs Flutter dependency installation, builds with \texttt{--base-href /app/}, embeds the FastAPI API URL through \texttt{API\_BASE\_URL}, verifies the output, and copies it into the backend package. GitHub Actions validates the build and tests. FastAPI Cloud is responsible for the production deployment.
 
-\begin{center}
-\resizebox{\linewidth}{!}{%
-\begin{tikzpicture}[
-  node distance=10mm and 12mm,
-  box/.style={draw=blue!55!black,rounded corners=2pt,fill=bluewash,align=center,minimum width=38mm,minimum height=11mm,font=\small},
-  db/.style={draw=green!45!black,rounded corners=2pt,fill=greenwash,align=center,minimum width=38mm,minimum height=11mm,font=\small},
-  arrow/.style={-{Latex[length=2mm]},thick,draw=muted}
-]
-\node[box] (domain) {pythonlearninghub.com};
-\node[box,below=of domain] (cloud) {FastAPI Cloud\\single deployment};
-\node[box,below left=of cloud] (html) {Jinja2 + HTMX\\public website};
-\node[box,below right=of cloud] (flutter) {Flutter Web\\/app/*};
-\node[box,below=of cloud] (api) {REST API\\/api/v1/*};
-\node[db,below=13mm of api] (postgres) {PostgreSQL\\managed database};
-\draw[arrow] (domain)--(cloud);
-\draw[arrow] (cloud)--(html);
-\draw[arrow] (cloud)--(flutter);
-\draw[arrow] (cloud)--(api);
-\draw[arrow] (api)--(postgres);
-\draw[arrow] (html)--(postgres);
-\draw[arrow] (flutter)--(api);
-\end{tikzpicture}}
-\end{center}
+\section{Evaluation}
 
-\FloatBarrier
-
-\section{Testing strategy}
-
-\begin{successbox}
-The implemented operational baseline is tested by \texttt{backend/tests/test\_system.py}: \texttt{/health}, \texttt{/version}, database-health failure without \texttt{DATABASE\_URL}, and the versioned API boundary. Flutter analysis and a release Web build are also required in CI.
-\end{successbox}
-
-\safeheading{Test layers}
-\begin{longtable}{@{}P{.23\linewidth}P{.30\linewidth}P{.35\linewidth}@{}}
-\caption{Proportional testing plan}\label{tab:tests}\\
-\toprule
-\textbf{Layer} & \textbf{Examples} & \textbf{Purpose}\cr
-\midrule
-\endfirsthead
-\toprule
-\textbf{Layer} & \textbf{Examples} & \textbf{Purpose}\cr
-\midrule
-\endhead
-\bottomrule
-\endfoot
-Unit & slug rules, progress calculation, authorization policies & Fast feedback on business rules.\\
-Repository & topic lookup, unique bookmark, pagination & Verify SQL and database assumptions.\\
-Service & publish topic, mark complete, moderate reply & Verify orchestration and transaction behavior.\\
-Route & status codes, template context, API schema & Verify HTTP contracts.\\
-Browser & public page renders without JS; HTMX swaps target & Protect the public experience.\\
-Flutter & navigation, API error states, auth refresh & Protect application workflows.\\
-End-to-end & login to progress to public topic link & Verify the boundaries work together.\\
-\end{longtable}
-
-\safeheading{Release checks}
-Before production deployment, confirm:
+The project will be evaluated through:
 
 \begin{itemize}
-  \item all migrations apply cleanly to a fresh database;
-  \item public pages return useful HTML with JavaScript disabled;
-  \item direct refreshes of \texttt{/app/dashboard} and other Flutter routes work;
-  \item unknown \texttt{/app} assets return an appropriate response;
-  \item API errors are consistent and do not leak database details;
-  \item cookies, CSRF protection, CORS, and trusted-host settings match the deployment;
-  \item the generated Flutter artifact is present in the deployment package;
-  \item no secrets, local paths, or debug settings are included in the release.
+  \item functional and integration tests for navigation, APIs, authentication, content, and learner actions;
+  \item backend and Flutter automated tests;
+  \item Lighthouse SEO and accessibility checks targeting at least 90/100;
+  \item a target Lighthouse performance score of at least 85/100;
+  \item usability testing with approximately 5--10 users;
+  \item content review for accuracy, consistency, examples, links, and progression.
 \end{itemize}
 
-\section{Security and operational safeguards}
+\section{Expected deliverables}
 
-\begin{itemize}
-  \item Validate all input at the API boundary and enforce domain rules in services.
-  \item Parameterize database queries; never interpolate user input into SQL.
-  \item Apply rate limits to authentication, search, comments, and expensive endpoints.
-  \item Limit upload size and file type if user uploads are introduced.
-  \item Log request identifiers, authentication failures, moderation actions, and unexpected errors without logging secrets.
-  \item Back up PostgreSQL and test restoration before relying on it.
-  \item Add health checks that verify application availability and database connectivity.
-  \item Keep dependency updates regular and review security advisories.
-\end{itemize}
-
-\section{Phased implementation roadmap}
-
-\safeheading{Phase 1: public learning site}
-Build the smallest useful product first:
-
-\begin{itemize}
-  \item FastAPI, PostgreSQL, migrations, configuration, and deployment skeleton;
-  \item Jinja2 base layout, home page, roadmap, topics, categories, and search;
-  \item service and repository boundaries for content;
-  \item metadata, sitemap, 404 page, accessibility, and responsive styling;
-  \item tests for public routes and content queries.
-\end{itemize}
-
-\safeheading{Phase 2: accounts and lightweight learner actions}
-\begin{itemize}
-  \item registration, login, logout, password recovery, and session handling;
-  \item progress and bookmarks through services and repositories;
-  \item HTMX buttons for simple actions on public pages;
-  \item API schemas and versioned routes for the same data.
-\end{itemize}
-
-\safeheading{Phase 3: Flutter application}
-\begin{itemize}
-  \item create the Flutter source project and typed API client;
-  \item implement login, dashboard, profile, progress, and bookmarks;
-  \item add the reproducible build-and-copy workflow;
-  \item mount the compiled output under \texttt{/app} and test direct route refreshes.
-\end{itemize}
-
-\safeheading{Phase 4: discussions and administration}
-Add public discussions, replies, reports, moderation state, admin screens, audit events, and role-based access. Decide feature by feature whether simple actions remain HTMX or move into Flutter.
-
-\safeheading{Phase 5: real-time and scale features}
-Only after the core product is stable should you add Redis, WebSockets, chat, notifications, background jobs, search indexing, caching, or more advanced analytics.
-
-\section{Common mistakes to avoid}
+The completed project will deliver:
 
 \begin{enumerate}
-  \item Putting Dart source files inside the Python application directory.
-  \item Creating different business rules for Jinja2 and Flutter.
-  \item Making public topic content depend on Flutter booting successfully.
-  \item Adding a global catch-all route that steals 404s from the public website.
-  \item Returning database models directly as API contracts.
-  \item Putting raw SQL in route handlers or Flutter widgets.
-  \item Introducing WebSockets and Redis before the basic learning workflow is validated.
-  \item Treating generated Flutter output as hand-maintained source.
-  \item Forgetting that every browser-delivered Flutter asset is public.
+  \item a structured Python learning website and roadmap;
+  \item public SEO-friendly content and search;
+  \item authentication, progress, bookmarks, and discussions;
+  \item a documented versioned FastAPI API;
+  \item a Flutter Web application served below \texttt{/app};
+  \item PostgreSQL migrations, repositories, services, and tests;
+  \item deployment and maintenance documentation;
+  \item functional, SEO, performance, usability, and content-quality results.
 \end{enumerate}
 
-\section{Definition of done}
+\section{Conclusion}
 
-The first production-ready milestone is complete when:
-
-\begin{itemize}
-  \item a visitor can browse and search useful Python content with JavaScript disabled;
-  \item the same domain serves public pages, HTMX fragments, JSON, and Flutter below clear prefixes;
-  \item a signed-in learner can record progress and bookmarks;
-  \item Jinja2 and Flutter consume the same service and repository rules;
-  \item direct navigation and refresh work for public and Flutter URLs;
-  \item automated tests cover the primary content and authentication flows;
-  \item deployment can rebuild the Flutter artifact instead of relying on manual file edits;
-  \item logging, backups, migrations, security settings, and error handling are documented.
-\end{itemize}
-
-\begin{keybox}
-The core rule to keep visible while implementing is: \textbf{one domain, one FastAPI backend, two deliberate presentation layers, shared services, and a staged roadmap}. That gives the project the SEO benefits of server-rendered content without giving up the richer interactions that Flutter is good at.
-\end{keybox}
-
-\appendix
-\section{Quick reference}
-\begin{tabularx}{\linewidth}{@{}P{.34\linewidth}Y@{}}
-\toprule
-\textbf{Question} & \textbf{Default decision}\\
-\midrule
-Where does public content render? & FastAPI plus Jinja2.\\
-Where do small page updates render? & Jinja2 fragments returned through HTMX.\\
-Where does the rich authenticated UI render? & Flutter Web below \texttt{/app}.\\
-Where does Flutter get data? & FastAPI JSON endpoints below \texttt{/api/v1}.\\
-Where does business logic live? & Shared services, called by both route families.\\
-Where does SQL live? & Repositories only.\\
-Where does Flutter source live? & \texttt{frontend/}.\\
-What is deployed for Flutter? & Generated \texttt{build/web} copied to the backend artifact.\\
-What should be built first? & Public content, search, authentication, progress, and bookmarks.\\
-What comes later? & Rich discussions, admin, Redis, WebSockets, chat, and advanced analytics.\\
-\bottomrule
-\end{tabularx}
+Python Learning Hub will combine discoverable educational content with a richer authenticated learning experience. FastAPI will provide one reliable application boundary, Jinja2 and HTMX will preserve SEO-friendly public pages, and Flutter Web will support interactive workflows without creating a second production backend. The staged approach keeps the initial release achievable while leaving room for community, administration, and real-time capabilities.
 
 \end{document}
