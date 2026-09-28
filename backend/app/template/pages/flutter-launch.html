@@ -5,7 +5,7 @@
 {% block content %}
 <h1>{{ title }}</h1>
 <p>This page is served by FastAPI and links to the Flutter Web application.</p>
-<p>Backend: <a href="{{ backend_url }}/health">{{ backend_url }}/health</a></p>
+<p>Backend: <a href="{{ backend_url }}/health" target="_self">{{ backend_url }}/health</a></p>
 <p>Application version: {{ version }}</p>
-<p><a href="{{ frontend_url }}">Open the Flutter default page</a></p>
+<p><a href="{{ frontend_url }}" target="_self">Open the Flutter default page</a></p>
 {% endblock %}

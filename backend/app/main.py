@@ -3,13 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
 from app.flutter.router import router as flutter_router
-from app.router.api.v1.stubs import (
-	public_router,
-	router as api_v1_router,
-	web_components_router,
-)
+from app.router.api.v1 import router as api_v1_router
 from app.router.utility.system import router as system_router
+from app.router.web.component.components import router as web_components_router
 from app.router.web.page import router as pages_router
+from app.router.web.page.pages import router as public_router
 
 
 settings = get_settings()
