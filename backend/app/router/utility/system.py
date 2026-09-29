@@ -2,7 +2,7 @@ import asyncpg
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
-from app.core.config import get_settings
+from app.core import settings
 
 router = APIRouter()
 
@@ -14,7 +14,6 @@ async def health() -> dict[str, str]:
 
 @router.get("/health/database")
 async def database_health() -> JSONResponse:
-    settings = get_settings()
     if not settings.database_url:
         return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -46,5 +45,4 @@ async def readiness() -> JSONResponse:
 
 @router.get("/version")
 async def version() -> dict[str, str]:
-    settings = get_settings()
-    return {"service": settings.app_name, "version": settings.app_version}
+    return {"service": settings.app_title}

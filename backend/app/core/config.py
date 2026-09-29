@@ -1,40 +1,33 @@
-from functools import lru_cache
-import os
-from dataclasses import dataclass
+from pathlib import Path
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+BASE_DIR = Path(__file__).resolve().parents[2]
 
 
-@dataclass(frozen=True)
-class Settings:
-    app_name: str
-    app_version: str
-    environment: str
-    api_prefix: str
-    cors_origins: tuple[str, ...]
-    database_url: str | None
+class Settings(BaseSettings):
+    app_title: str
+    app_description: str
+    database_url: str
+    secret_key: str
+    internal_api_key: str
+    algorithm: str
+    access_token_expire_minutes: int
+    cloudinary_cloud_name: str
+    cloudinary_api_key: str
+    cloudinary_api_secret: str
+    smtp_host: str
+    smtp_port: int
+    smtp_username: str
+    smtp_password: str
+    mail_from: str
+    debug: bool
 
-
-def _normalize_api_prefix(value: str) -> str:
-    prefix = value.strip()
-    if not prefix.startswith("/"):
-        prefix = f"/{prefix}"
-    return prefix.rstrip("/") or "/"
-
-
-@lru_cache
-def get_settings() -> Settings:
-    origins = tuple(
-        origin.strip()
-        for origin in os.getenv(
-            "CORS_ORIGINS",
-            "http://localhost:3000,http://localhost:5000",
-        ).split(",")
-        if origin.strip()
+    model_config = SettingsConfigDict(
+        env_file=str(BASE_DIR / ".env"),
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore",
     )
-    return Settings(
-        app_name=os.getenv("APP_NAME", "SEO Python Hub"),
-        app_version=os.getenv("APP_VERSION", "0.1.0"),
-        environment=os.getenv("ENVIRONMENT", "development"),
-        api_prefix=_normalize_api_prefix(os.getenv("API_PREFIX", "/api/v1")),
-        cors_origins=origins,
-        database_url=os.getenv("DATABASE_URL"),
-    )
+
+settings = Settings()

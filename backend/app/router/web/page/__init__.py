@@ -3,7 +3,7 @@ from pathlib import Path
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 
-from app.core.config import get_settings
+from app.core import settings
 
 
 router = APIRouter(tags=["web"])
@@ -14,23 +14,20 @@ templates = Jinja2Templates(
 
 @router.get("/", name="home")
 async def home(request: Request):
-    settings = get_settings()
     return templates.TemplateResponse(
         request=request,
         name="pages/dummy.html",
-        context={"title": settings.app_name, "version": settings.app_version},
+        context={"title": settings.app_title},
     )
 
 
 @router.get("/topics", name="topics")
 async def topics(request: Request):
-    settings = get_settings()
     return templates.TemplateResponse(
         request=request,
         name="pages/topics.html",
         context={
-            "title": settings.app_name,
-            "version": settings.app_version,
+            "title": settings.app_title,
             "topics": ["Python", "NumPy", "Pandas", "FastAPI"],
         },
     )
