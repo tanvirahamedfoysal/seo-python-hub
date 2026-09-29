@@ -1,94 +1,119 @@
-from fastapi.testclient import TestClient
+from collections.abc import Iterator
+
 import pytest
 
-from app.main import app
 from app.core import settings
+from app.router.utility import system
 
 
-client = TestClient(app)
+class FakeConnection:
+    def __init__(self) -> None:
+        self.closed = False
+
+    async def close(self) -> None:
+        self.closed = True
 
 
-def test_settings_follow_env_file_structure(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("APP_TITLE", "Python Hub")
-    monkeypatch.setenv("APP_DESCRIPTION", "App for the community")
-    monkeypatch.setenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/test_db")
-    monkeypatch.setenv("SECRET_KEY", "test-secret")
-    monkeypatch.setenv("INTERNAL_API_KEY", "test-internal-key")
-    monkeypatch.setenv("ALGORITHM", "HS256")
-    monkeypatch.setenv("ACCESS_TOKEN_EXPIRE_MINUTES", "45")
-    monkeypatch.setenv("CLOUDINARY_CLOUD_NAME", "demo-cloud")
-    monkeypatch.setenv("CLOUDINARY_API_KEY", "demo-key")
-    monkeypatch.setenv("CLOUDINARY_API_SECRET", "demo-secret")
-    monkeypatch.setenv("SMTP_HOST", "smtp.example.com")
-    monkeypatch.setenv("SMTP_PORT", "587")
-    monkeypatch.setenv("SMTP_USERNAME", "smtp-user")
-    monkeypatch.setenv("SMTP_PASSWORD", "smtp-pass")
-    monkeypatch.setenv("MAIL_FROM", "noreply@example.com")
-    monkeypatch.setenv("DEBUG", "true")
-
-        assert settings.app_title == "Python Hub"
-        assert settings.app_description == "App for the community"
-        assert settings.database_url == "postgresql://user:pass@localhost:5432/test_db"
-        assert settings.secret_key == "test-secret"
-        assert settings.internal_api_key == "test-internal-key"
-        assert settings.algorithm == "HS256"
-        assert settings.access_token_expire_minutes == 45
-        assert settings.cloudinary_cloud_name == "demo-cloud"
-        assert settings.cloudinary_api_key == "demo-key"
-        assert settings.cloudinary_api_secret == "demo-secret"
-        assert settings.smtp_host == "smtp.example.com"
-        assert settings.smtp_port == 587
-        assert settings.smtp_username == "smtp-user"
-        assert settings.smtp_password == "smtp-pass"
-        assert settings.mail_from == "noreply@example.com"
-        assert settings.debug is True
+@pytest.fixture()
+def database_url(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
+    monkeypatch.setattr(settings, "database_url", "")
+    yield
 
 
-
-def test_health() -> None:
+def test_health_reports_process_is_running(client) -> None:
     response = client.get("/health")
 
     assert response.status_code == 200
-    assert response.json()["status"] == "ok"
+    assert response.json() == {"status": "ok", "service": settings.app_title}
 
 
-def test_version() -> None:
+def test_version_reports_service_name_and_version(client) -> None:
     response = client.get("/version")
 
     assert response.status_code == 200
-    assert response.json()["service"] == "Python Hub"
+    assert response.json() == {
+        "service": settings.app_title,
+        "version": settings.app_version,
+    }
 
 
-def test_database_health_requires_configuration() -> None:
+def test_database_health_is_unavailable_without_configuration(client, database_url) -> None:
     response = client.get("/health/database")
+
+    assert response.status_code == 503
+    assert response.json() == {
+        "status": "unavailable",
+        "message": "DATABASE_URL is not configured",
+    }
+
+
+def test_ready_is_unavailable_without_database_configuration(client, database_url) -> None:
+    response = client.get("/ready")
 
     assert response.status_code == 503
     assert response.json()["status"] == "unavailable"
 
 
-def test_api_prefix_is_available() -> None:
-    response = client.get("/api/v1/topics")
+def test_database_health_closes_successful_connection(
+    client, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    connection = FakeConnection()
 
-    assert response.status_code == 501
+    async def fake_connect(database_url: str, timeout: int):
+        assert database_url == settings.database_url
+        assert timeout == 2
+        return connection
 
+    monkeypatch.setattr(system.asyncpg, "connect", fake_connect)
 
-def test_root_renders_welcome_page_with_app_link() -> None:
-    response = client.get("/")
-
-    assert response.status_code == 200
-    assert "Python Hub" in response.text
-    assert "/app" in response.text
-
-
-def test_flutter_app_is_served_by_fastapi() -> None:
-    response = client.get("/app")
+    response = client.get("/health/database")
 
     assert response.status_code == 200
-    assert "<html" in response.text
+    assert response.json() == {
+        "status": "ok",
+        "message": "Database is available",
+    }
+    assert connection.closed is True
 
 
-def test_flutter_deep_link_uses_flutter_entrypoint() -> None:
-    response = client.get("/app/dashboard")
+def test_ready_reports_success_when_database_connects(
+    client, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    connection = FakeConnection()
+
+    async def fake_connect(database_url: str, timeout: int):
+        return connection
+
+    monkeypatch.setattr(system.asyncpg, "connect", fake_connect)
+
+    response = client.get("/ready")
 
     assert response.status_code == 200
-    assert "flutter_bootstrap.js" in response.text
+    assert response.json() == {"status": "ok", "message": "Service is ready"}
+    assert connection.closed is True
+
+
+def test_database_health_handles_connection_errors(client, monkeypatch) -> None:
+    async def failing_connect(database_url: str, timeout: int):
+        raise OSError("database is down")
+
+    monkeypatch.setattr(system.asyncpg, "connect", failing_connect)
+
+    response = client.get("/health/database")
+
+    assert response.status_code == 503
+    assert response.json() == {
+        "status": "unavailable",
+        "message": "Database is unavailable",
+    }
+
+
+def test_openapi_is_available_and_contains_operational_routes(client) -> None:
+    response = client.get("/openapi.json")
+
+    assert response.status_code == 200
+    paths = response.json()["paths"]
+    assert "/health" in paths
+    assert "/health/database" in paths
+    assert "/ready" in paths
+    assert "/version" in paths

@@ -7,13 +7,8 @@ from app.core import settings
 router = APIRouter()
 
 
-@router.get("/health")
-async def health() -> dict[str, str]:
-    return {"status": "ok"}
-
-
-@router.get("/health/database")
-async def database_health() -> JSONResponse:
+@router.get("/health-status")
+async def health_status() -> JSONResponse:
     if not settings.database_url:
         return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -29,20 +24,7 @@ async def database_health() -> JSONResponse:
             content={"status": "unavailable", "message": "Database is unavailable"},
         )
 
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"status": "ok"})
-
-
-@router.get("/ready")
-async def readiness() -> JSONResponse:
-    database_response = await database_health()
-    if database_response.status_code != status.HTTP_200_OK:
-        return JSONResponse(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            content={"status": "unavailable", "message": "Service is not ready"},
-        )
-    return JSONResponse(status_code=status.HTTP_200_OK, content={"status": "ready"})
-
-
-@router.get("/version")
-async def version() -> dict[str, str]:
-    return {"service": settings.app_title}
+    return JSONResponse(
+        status_code=status.HTTP_200_OK, 
+        content={"status": "ok", "message": "Service is ready"}
+    )
