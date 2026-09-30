@@ -395,8 +395,7 @@ Authentication and authorization are enforced in FastAPI. Public HTML routes exp
 ## Project Structure
 
 ```text
-python-learning-hub/
-├── alembic/                         migration files
+backend/
 ├── app/
 │   ├── core/                         configuration, database, security, cache
 │   ├── routers/
@@ -411,6 +410,7 @@ python-learning-hub/
 │   └── static/                       CSS, JavaScript, images, robots.txt
 ├── frontend/
 │   └── flutter_app/                  Flutter Web application
+├── migrations/                       migration files
 ├── tests/                            web, HTMX, API, security, and WebSocket tests
 ├── pyproject.toml
 ├── README.md
