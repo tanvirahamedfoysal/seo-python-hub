@@ -1,0 +1,3 @@
+<div id="related-topics" class="grid-2">
+    {% for topic in topics %}<a class="card" href="{{ url_for('topic_page', slug=topic.slug) }}"><div class="meta"><span class="pill pill-teal">{{ topic.difficulty }}</span><span>{{ topic.time }}</span></div><h3>{{ topic.title }}</h3><p>{{ topic.summary }}</p></a>{% endfor %}
+</div>

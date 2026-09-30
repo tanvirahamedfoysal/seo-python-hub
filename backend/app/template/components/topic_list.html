@@ -1,0 +1,17 @@
+{% if topics %}
+<div class="card" id="topic-list">
+    {% for topic in topics %}
+    <article class="topic-row">
+        <div class="row-icon {{ topic.color or 'teal' }}" aria-hidden="true">⌘</div>
+        <div>
+            <div class="meta"><span class="pill pill-{{ topic.color or 'teal' }}">{{ topic.difficulty }}</span><span>{{ topic.category }}</span><span>{{ topic.time }}</span></div>
+            <h3><a href="{{ url_for('topic_page', slug=topic.slug) }}">{{ topic.title }}</a></h3>
+            <p>{{ topic.summary }}</p>
+            <div class="meta">{% for tag in topic.tags[:3] %}<span>#{{ tag }}</span>{% endfor %}<span>Stage: {{ topic.stage }}</span></div>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty" id="topic-list"><h3>No topics match those filters</h3><p>Try a broader category, difficulty, or tag.</p><a class="button button-secondary" href="{{ url_for('topics') }}">Clear filters</a></div>
+{% endif %}

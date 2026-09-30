@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Python Guides | Python Learning Hub{% endblock %}
+{% block meta_description %}Use concise Python guides for testing, web APIs, environments, and everyday development decisions.{% endblock %}
+{% block content %}
+<section class="page-head"><div class="container"><div class="breadcrumbs"><a href="{{ url_for('home') }}">Home</a><span>Guides</span></div><span class="eyebrow">Reference when you need it</span><h1>Practical answers for the parts around the code.</h1><p>Guides are compact, opinionated references for the tools and habits that help Python projects stay understandable.</p></div></section>
+<section class="section"><div class="container grid-3">{% for guide in guides %}<article class="card"><div class="card-meta"><span class="pill pill-violet">{{ guide.difficulty }}</span><span>{{ guide.category }}</span></div><h2 style="font-size: 1.35rem;"><a href="{{ url_for('guide_page', slug=guide.slug) }}">{{ guide.title }}</a></h2><p>{{ guide.summary }}</p><div class="meta"><span>Tool: {{ guide.tool }}</span></div><a class="link-arrow" href="{{ url_for('guide_page', slug=guide.slug) }}">Read guide</a></article>{% endfor %}</div></section>
+{% endblock %}

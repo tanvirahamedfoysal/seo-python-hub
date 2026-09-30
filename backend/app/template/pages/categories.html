@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Python Categories | Python Learning Hub{% endblock %}
+{% block meta_description %}Choose a Python learning direction, from core language concepts to testing, web development, and data.{% endblock %}
+{% block content %}
+<section class="page-head"><div class="container"><div class="breadcrumbs"><a href="{{ url_for('home') }}">Home</a><span>Categories</span></div><span class="eyebrow">Choose a direction</span><h1>Find the part of Python you want to make useful.</h1><p>Categories are broad learning areas. Start with one, then follow the links back to the roadmap when a prerequisite appears.</p></div></section>
+<section class="section"><div class="container grid-3">{% for category in categories %}<a class="card" href="{{ url_for('category_page', slug=category.slug) }}"><div class="icon-tile {{ category.color }}">{{ loop.index }}</div><h3>{{ category.name }}</h3><p>{{ category.summary }}</p><div class="meta" style="margin-top: 1rem;"><span>{{ category.count }} published topics</span><span class="link-arrow">Explore</span></div></a>{% endfor %}</div></section>
+{% endblock %}

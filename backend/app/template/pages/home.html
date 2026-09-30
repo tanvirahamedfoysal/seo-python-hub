@@ -1,21 +1,12 @@
 {% extends "base.html" %}
-
-{% block title %}{{ title }}{% endblock %}
-
+{% set page_title = "Learn Python with intention" %}
+{% block title %}Learn Python with intention | Python Learning Hub{% endblock %}
+{% block meta_description %}A structured way to learn Python from fundamentals to practical development, with guided topics, tutorials, and a public community.{% endblock %}
 {% block content %}
-<h1>{{ title }}</h1>
-<p>Follow a structured path from Python fundamentals to advanced practice.</p>
-<ul>
-    {% for topic in topics %}
-    <li>{{ topic }}</li>
-    {% endfor %}
-</ul>
-<section id="progress">
-    <button
-        hx-post="{{ url_for('topic-progress', topic_id=1) }}"
-        hx-target="#progress"
-        hx-swap="innerHTML">
-        Mark Variables complete
-    </button>
-</section>
+<section class="hero"><div class="container hero-grid"><div><span class="eyebrow">A clearer way to learn Python</span><h1>Build the skill.<br><em>Keep the curiosity.</em></h1><p class="lede">A guided learning path from your first variables to useful, tested Python projects — with explanations that respect your time and your questions.</p><div class="hero-actions"><a class="button button-primary" href="{{ url_for('roadmap') }}">Start the roadmap ↗</a><a class="button button-secondary" href="{{ url_for('topics') }}">Browse topics</a></div><div class="meta" style="margin-top: 1.2rem;"><span>✓ Read without an account</span><span>✓ Learn at your pace</span><span>✓ Return to your progress</span></div></div><div class="hero-art" aria-label="A Python code example"><div class="code-card"><div class="code-top"><span></span><span></span><span></span></div><pre><span class="code-key">def</span> learn_with_intention(path):&#10;    ideas = explore(path)&#10;    practice(ideas)&#10;    <span class="code-key">return</span> confidence&#10;&#10;<span class="code-key">for</span> step <span class="code-key">in</span> roadmap:&#10;    <span class="code-string">print</span>(step.title)</pre></div><div class="floating-note">12 days of steady progress ✦</div></div></div></section>
+<section class="section"><div class="container"><div class="section-header"><div><div class="kicker">A library with a point of view</div><h2>Learn the ideas that make Python click.</h2><p>Short lessons for the concept in front of you, practical tutorials for the work you want to do, and guides for the tools around it.</p></div><a class="link-arrow" href="{{ url_for('topics') }}">Explore the library</a></div><div class="grid-4">{% for item in coverage %}<article class="card"><div class="icon-tile {{ item.color }}">{{ item.icon }}</div><h3>{{ item.title }}</h3><p>{{ item.summary }}</p></article>{% endfor %}</div></div></section>
+<section class="section band-dark"><div class="container"><div class="section-header"><div><div class="kicker" style="color: #e7ac3a;">The path is visible</div><h2>From first steps to confident systems.</h2><p>Use the roadmap as a recommendation, not a cage. Follow prerequisites, revisit foundations, and choose a practical path when you are ready.</p></div><a class="button button-gold" href="{{ url_for('roadmap') }}">See the full roadmap</a></div><div class="grid-4">{% for stage in stages[:4] %}<article class="stage-card"><div class="stage-number">0{{ loop.index }}</div><h3>{{ stage.name }}</h3><p>{{ stage.summary }}</p><ul>{% for slug in stage.topics %}{% set topic = topic_by_slug(slug) %}<li><a href="{{ url_for('topic_page', slug=slug) }}" style="color: #c5eee5;">{{ topic.title if topic else slug }}</a></li>{% endfor %}</ul></article>{% endfor %}</div></div></section>
+<section class="section"><div class="container"><div class="section-header"><div><div class="kicker">Start with something useful</div><h2>Featured learning paths</h2><p>Pick the format that matches the question you have today.</p></div><a class="link-arrow" href="{{ url_for('tutorials') }}">View all tutorials</a></div><div class="grid-3">{% for item in featured %}<article class="card"><div class="card-meta"><span class="pill pill-{{ item.color }}">{{ item.type }}</span><span>{{ item.time }}</span></div><h3><a href="{{ item.url }}">{{ item.title }}</a></h3><p>{{ item.summary }}</p><a class="link-arrow" href="{{ item.url }}">Open {{ item.type|lower }}</a></article>{% endfor %}</div></div></section>
+<section class="section-tight"><div class="container"><div class="card" style="display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; background: #e0f4ef; border-color: #c6e6df;"><div><div class="kicker">A private layer for your momentum</div><h2>Read freely. Remember what matters.</h2><p style="max-width: 680px; color: #48646a;">Create an account when you want progress tracking, bookmarks, personal statistics, notifications, and community participation. The public lessons stay open either way.</p></div><a class="button button-primary" href="{{ url_for('flutter_app') }}">Open learner app</a></div></div></section>
+<section class="section"><div class="container"><div class="section-header"><div><div class="kicker">Learn together</div><h2>Questions are part of the path.</h2><p>Browse public discussions, compare approaches, and ask a question when the docs leave you with a “but why?”</p></div><a class="link-arrow" href="{{ url_for('discussions') }}">Browse discussions</a></div><div class="grid-3">{% for discussion in discussions %}<article class="card"><div class="meta"><span class="pill pill-teal">{{ discussion.topic }}</span><span>{{ discussion.replies }} replies</span></div><h3><a href="{{ url_for('discussion_page', discussion_id=discussion.id) }}">{{ discussion.title }}</a></h3><p>{{ discussion.excerpt }}</p><div class="author" style="margin-top: 1rem;"><span class="avatar">{{ discussion.author[:1] }}</span><span>{{ discussion.author }} · {{ discussion.date }}</span></div></article>{% endfor %}</div></div></section>
 {% endblock %}

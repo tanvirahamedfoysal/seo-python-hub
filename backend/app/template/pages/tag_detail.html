@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}#{{ tag.name }} | Python Learning Hub{% endblock %}
+{% block meta_description %}{{ tag.description }} Browse related Python topics and practical learning material.{% endblock %}
+{% block content %}
+<section class="page-head"><div class="container"><div class="breadcrumbs"><a href="{{ url_for('home') }}">Home</a><span>Tags</span><span>#{{ tag.name }}</span></div><span class="eyebrow">Focused collection</span><h1>#{{ tag.name }}</h1><p>{{ tag.description }}</p></div></section>
+<section class="section"><div class="container"><div class="section-header"><div><h2>Topics tagged {{ tag.name }}</h2><p>Use this collection as a narrow starting point, then widen back out to the category or roadmap when you need more context.</p></div></div>{% include "components/topic_list.html" %}</div></section>
+{% endblock %}

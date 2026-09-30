@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Python Tutorials | Python Learning Hub{% endblock %}
+{% block meta_description %}Build practical Python projects with tutorials that take you from setup to a working result.{% endblock %}
+{% block content %}
+<section class="page-head"><div class="container"><div class="breadcrumbs"><a href="{{ url_for('home') }}">Home</a><span>Tutorials</span></div><span class="eyebrow">Long-form practice</span><h1>Build something that gives the ideas somewhere to go.</h1><p>Tutorials are longer journeys: a visible outcome, ordered steps, checkpoints, and troubleshooting when the happy path is not enough.</p></div></section>
+<section class="section"><div class="container grid-3">{% for item in tutorials %}<article class="card"><div class="card-meta"><span class="pill pill-coral">{{ item.difficulty }}</span><span>{{ item.time }}</span></div><h3><a href="{{ url_for('tutorial_page', slug=item.slug) }}">{{ item.title }}</a></h3><p>{{ item.summary }}</p><div class="callout" style="margin-bottom: 0;"><strong>Outcome:</strong> {{ item.outcome }}</div><a class="link-arrow" href="{{ url_for('tutorial_page', slug=item.slug) }}">Start tutorial</a></article>{% endfor %}</div></section>
+{% endblock %}

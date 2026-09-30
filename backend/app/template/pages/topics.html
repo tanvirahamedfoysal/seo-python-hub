@@ -1,14 +1,8 @@
 {% extends "base.html" %}
-
-{% block title %}Topics | {{ title }}{% endblock %}
-
+{% set page_title = "Python topics" %}
+{% block title %}Python Topics | Python Learning Hub{% endblock %}
+{% block meta_description %}Browse practical Python topics by difficulty, category, and learning stage.{% endblock %}
 {% block content %}
-<h1>Python topics</h1>
-<p>Explore some of the tools used in the project.</p>
-<ul>
-    {% for topic in topics %}
-    <li>{{ topic }}</li>
-    {% endfor %}
-</ul>
-<p><a href="{{ url_for('home') }}" target="_self">Back to welcome</a></p>
+<section class="page-head"><div class="container"><div class="breadcrumbs"><a href="{{ url_for('home') }}">Home</a><span>Topics</span></div><span class="eyebrow">The public library</span><h1>One idea at a time.</h1><p>Focused lessons that explain the concept, show the shape of the code, and point you toward the next useful connection.</p></div></section>
+<section class="section"><div class="container"><form class="filters" action="{{ url_for('topics') }}" method="get" hx-get="{{ url_for('topic_list_fragment') }}" hx-target="#topic-results"><input class="field" type="search" name="q" value="{{ filters.q }}" placeholder="Search topics" aria-label="Search topics"><select name="category" aria-label="Filter by category"><option value="">All categories</option>{% for category in categories %}<option value="{{ category.slug }}" {% if filters.category == category.slug %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select><select name="difficulty" aria-label="Filter by difficulty"><option value="">All levels</option>{% for level in ['Beginner', 'Intermediate', 'Advanced'] %}<option value="{{ level }}" {% if filters.difficulty == level %}selected{% endif %}>{{ level }}</option>{% endfor %}</select><button class="button button-primary button-small" type="submit">Filter topics</button><noscript><button class="button button-secondary button-small" type="submit">Apply</button></noscript></form><div id="topic-results">{% include "components/topic_list.html" %}</div></div></section>
 {% endblock %}

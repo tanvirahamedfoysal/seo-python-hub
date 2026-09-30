@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Something went wrong | Python Learning Hub{% endblock %}
+{% block content %}
+<section class="empty-page"><div class="container"><span class="eyebrow">500 · Temporary problem</span><h1>The page needs another try.</h1><p>Something went wrong while preparing this page. Return home and try again in a moment.</p><a class="button button-primary" href="{{ url_for('home') }}">Back home</a></div></section>
+{% endblock %}

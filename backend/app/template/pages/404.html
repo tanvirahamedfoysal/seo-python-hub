@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Page not found | Python Learning Hub{% endblock %}
+{% block content %}
+<section class="empty-page"><div class="container"><span class="eyebrow">404 · Not found</span><h1>That path is not in the library.</h1><p>Try the roadmap, browse topics, or search for the idea you had in mind.</p><div class="action-bar"><a class="button button-primary" href="{{ url_for('home') }}">Back home</a><a class="button button-secondary" href="{{ url_for('search_page') }}">Search the library</a></div></div></section>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}{{ category.name }} | Python Learning Hub{% endblock %}
+{% block meta_description %}{{ category.summary }} Browse related Python topics, tutorials, and guides.{% endblock %}
+{% block content %}
+<section class="page-head"><div class="container"><div class="breadcrumbs"><a href="{{ url_for('home') }}">Home</a><span><a href="{{ url_for('categories') }}">Categories</a></span><span>{{ category.name }}</span></div><span class="eyebrow">{{ category.count }} published topics</span><h1>{{ category.name }}</h1><p>{{ category.summary }} This landing page is a useful starting point whether you are learning the language or choosing a practical next path.</p></div></section>
+<section class="section"><div class="container content-layout"><div><div class="card" style="margin-bottom: 1rem;"><h2 style="font-size: 1.55rem;">What this area helps you do</h2><p>Build a connected mental model instead of collecting isolated syntax. Use the topic summaries below to choose the smallest next idea that will help your current project.</p></div>{% include "components/topic_list.html" %}</div><aside><div class="card sidebar-card"><h3>Related paths</h3><ul><li><a href="{{ url_for('roadmap') }}">Complete roadmap</a></li><li><a href="{{ url_for('tutorials') }}">Practical tutorials</a></li><li><a href="{{ url_for('guides') }}">Reference guides</a></li></ul></div></aside></div></section>
+{% endblock %}

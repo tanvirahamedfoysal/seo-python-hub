@@ -1,0 +1,17 @@
+<div id="search-results">
+    {% if query %}<p class="search-result-count">{{ results|length }} result{% if results|length != 1 %}s{% endif %} for <strong>“{{ query }}”</strong></p>{% endif %}
+    {% if results %}
+    <div class="card">
+        {% for result in results %}
+        <article class="result-row">
+            <div class="row-icon {% if result.type == 'Topic' %}teal{% elif result.type == 'Guide' %}violet{% elif result.type == 'Tutorial' %}coral{% else %}gold{% endif %}" aria-hidden="true">{% if result.type == 'Topic' %}⌘{% elif result.type == 'Guide' %}▤{% elif result.type == 'Tutorial' %}◆{% else %}◌{% endif %}</div>
+            <div><div class="meta"><span class="pill pill-teal">{{ result.type }}</span><span>{{ result.meta }}</span></div><h3><a href="{{ result.url }}">{{ result.title }}</a></h3><p>{{ result.summary }}</p></div>
+        </article>
+        {% endfor %}
+    </div>
+    {% elif query %}
+    <div class="empty"><h3>No results yet</h3><p>Try “functions”, “testing”, “FastAPI”, or “asyncio”.</p><a class="button button-secondary" href="{{ url_for('topics') }}">Browse topics</a></div>
+    {% else %}
+    <div class="empty"><h3>Search the public library</h3><p>Find a topic, tutorial, guide, or discussion by keyword.</p></div>
+    {% endif %}
+</div>

@@ -3,17 +3,61 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <base target="_self">
+    <meta name="description" content="{% block meta_description %}A structured way to learn Python from fundamentals to practical development.{% endblock %}">
+    <link rel="canonical" href="{{ canonical_url or request.url }}">
+    <meta property="og:title" content="{% block og_title %}{{ page_title or 'Python Learning Hub' }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Learn Python with guided topics, practical tutorials, and a clear roadmap.{% endblock %}">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="{{ url_for('static', path='site.css') }}">
     <title>{% block title %}Python Learning Hub{% endblock %}</title>
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    {% block head_extra %}{% endblock %}
 </head>
 <body>
-    <nav aria-label="Primary navigation">
-        <a href="{{ url_for('home') }}" target="_self">Home</a>
-        <a href="{{ url_for('topics') }}" target="_self">Topics</a>
-        <a href="{{ url_for('flutter_app') }}" target="_self">App</a>
-        <a href="{{ request.url_for('flutter_send_page') }}" target="_self">App send page</a>
-    </nav>
-    <main>{% block content %}{% endblock %}</main>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="nav-wrap">
+            <a class="brand" href="{{ url_for('home') }}" aria-label="Python Learning Hub home">
+                <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
+                <span>Python<br>Learning Hub</span>
+            </a>
+            <nav class="main-nav" aria-label="Primary navigation">
+                <a href="{{ url_for('roadmap') }}">Roadmap</a>
+                <a href="{{ url_for('topics') }}">Topics</a>
+                <a href="{{ url_for('tutorials') }}">Tutorials</a>
+                <a href="{{ url_for('guides') }}">Guides</a>
+                <a href="{{ url_for('discussions') }}">Discussions</a>
+            </nav>
+            <form class="nav-search" action="{{ url_for('search_page') }}" method="get" role="search">
+                <span aria-hidden="true">⌕</span>
+                <input type="search" name="q" placeholder="Search Python" aria-label="Search Python Learning Hub">
+            </form>
+            <a class="button button-primary button-small" href="{{ url_for('flutter_app') }}">Open app</a>
+            <button class="header-menu" type="button" aria-label="Navigation menu" aria-expanded="false" onclick="this.nextElementSibling.hidden = !this.nextElementSibling.hidden">Menu</button>
+            <nav class="mobile-nav" hidden aria-label="Mobile navigation">
+                <a href="{{ url_for('roadmap') }}">Roadmap</a>
+                <a href="{{ url_for('topics') }}">Topics</a>
+                <a href="{{ url_for('tutorials') }}">Tutorials</a>
+                <a href="{{ url_for('guides') }}">Guides</a>
+                <a href="{{ url_for('discussions') }}">Discussions</a>
+            </nav>
+        </div>
+    </header>
+    {% if flash %}<div class="container">{% include "components/flash.html" %}</div>{% endif %}
+    <main id="main-content">{% block content %}{% endblock %}</main>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark" aria-hidden="true">&lt;/&gt;</span><span>Python Learning Hub</span></a>
+                    <p>Learn the language, build the habit, and make useful things.</p>
+                </div>
+                <div><h3>Learn</h3><ul><li><a href="{{ url_for('roadmap') }}">Roadmap</a></li><li><a href="{{ url_for('topics') }}">Topics</a></li><li><a href="{{ url_for('tutorials') }}">Tutorials</a></li><li><a href="{{ url_for('guides') }}">Guides</a></li></ul></div>
+                <div><h3>Community</h3><ul><li><a href="{{ url_for('discussions') }}">Discussions</a></li><li><a href="{{ url_for('about') }}">About</a></li><li><a href="{{ url_for('contact') }}">Contact</a></li><li><a href="{{ url_for('flutter_app') }}">Learner app</a></li></ul></div>
+                <div><h3>Trust</h3><ul><li><a href="{{ url_for('privacy') }}">Privacy</a></li><li><a href="{{ url_for('terms') }}">Terms</a></li><li><a href="{{ url_for('sitemap') }}">Sitemap</a></li><li><a href="{{ url_for('robots') }}">Robots</a></li></ul></div>
+            </div>
+            <div class="footer-bottom"><span>© 2026 Python Learning Hub</span><span>Public lessons are readable without an account.</span></div>
+        </div>
+    </footer>
 </body>
 </html>
