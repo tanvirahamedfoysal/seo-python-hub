@@ -28,11 +28,13 @@ dev = [
     "pytest>=9.0.0",
 ]
 
+[tool.fastapi]
+entrypoint = "app.main:app"
+
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 
-[tool.uv]
-package = false
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
