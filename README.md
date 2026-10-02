@@ -37,10 +37,10 @@ additionals/              API, planning, and deployment documentation
 
 ## Production URLs
 
-- Application: https://seo-python-hub-437e0515.fastapicloud.dev/app
-- Backend home: https://seo-python-hub-437e0515.fastapicloud.dev/
-- API docs: https://seo-python-hub-437e0515.fastapicloud.dev/docs
-- Health: https://seo-python-hub-437e0515.fastapicloud.dev/health
+- Application: https://seo-python-hub-eefdcd3b.fastapicloud.dev/app
+- Backend home: https://seo-python-hub-eefdcd3b.fastapicloud.dev/
+- API docs: https://seo-python-hub-eefdcd3b.fastapicloud.dev/docs
+- Health: https://seo-python-hub-eefdcd3b.fastapicloud.dev/health
 
 ## Local development
 
