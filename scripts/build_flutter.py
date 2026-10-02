@@ -5,16 +5,16 @@ import subprocess
 
 
 ROOT = Path(__file__).resolve().parents[1]
-FRONTEND = ROOT / "frontend"
-BUILD = FRONTEND / "build" / "web"
-DESTINATION = ROOT / "backend" / "app" / "flutter" / "web"
+FLUTTER = ROOT / "app" / "frontend" / "flutter"
+BUILD = FLUTTER / "build" / "web"
+DESTINATION = ROOT / "app" / "frontend" / "flutter_web"
 API_BASE_URL = os.getenv(
     "API_BASE_URL",
     "https://seo-python-hub-437e0515.fastapicloud.dev",
 )
 
 
-subprocess.run(["flutter", "pub", "get"], cwd=FRONTEND, check=True)
+subprocess.run(["flutter", "pub", "get"], cwd=FLUTTER, check=True)
 subprocess.run(
     [
         "flutter",
@@ -26,7 +26,7 @@ subprocess.run(
         "--dart-define",
         f"API_BASE_URL={API_BASE_URL}",
     ],
-    cwd=FRONTEND,
+    cwd=FLUTTER,
     check=True,
 )
 
@@ -35,8 +35,6 @@ if not (BUILD / "index.html").is_file():
 
 DESTINATION.mkdir(parents=True, exist_ok=True)
 for child in DESTINATION.iterdir():
-    if child.name == ".gitkeep":
-        continue
     if child.is_dir():
         shutil.rmtree(child)
     else:

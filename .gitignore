@@ -1,35 +1,11 @@
-.vscode/
-
-# Python caches and local environments
+.env
+.venv/
 __pycache__/
+**/__pycache__/
 *.py[cod]
-*$py.class
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-.hypothesis/
-.tox/
-.nox/
 .coverage
 .coverage.*
 htmlcov/
-.venv/
-venv/
-env/
-
-# Flutter, Dart, and build caches
-.dart_tool/
-.pub-cache/
-.pub/
-build/
-coverage/
-.flutter-plugins
-.flutter-plugins-dependencies
-.packages
-
-# General generated files and local caches
-*.log
-.cache/
-.DS_Store
-Thumbs.db
-.idea/

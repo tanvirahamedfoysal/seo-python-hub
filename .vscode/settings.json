@@ -1,0 +1,4 @@
+{
+    "cmake.ignoreCMakeListsMissing": true,
+    "python-envs.defaultEnvManager": "ms-python.python:venv"
+}

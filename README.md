@@ -17,24 +17,22 @@ FastAPI
        `-- PostgreSQL through asyncpg
 ```
 
-FastAPI is the production boundary. Flutter is built as a static Web artifact,
-embedded in `backend/app/flutter/web`, and served below `/app`. The Flutter
-client calls the API through the same origin in production.
+FastAPI is the production boundary. Frontend source and deployable assets live
+under `app/frontend`; backend logic lives under `app/backend`. Flutter is built
+as a static Web artifact in `app/frontend/flutter_web` and served below `/app`.
 
 ## Project layout
 
 ```text
-backend/
-  app/
-    core/                 Settings and application configuration
-    flutter/              Generated Flutter Web artifact served at /app
-    routers/              FastAPI route modules
-    templates/            Jinja2 pages and HTML fragments
-  tests/                  Backend tests
-  pyproject.toml
-frontend/                 Flutter source project
+app/
+  backend/                FastAPI entry point, APIs, core logic, and utilities
+  frontend/
+    htmx/                 Jinja2 templates, HTMX routes, and static assets
+    flutter/               Raw Flutter project
+    flutter_web/           Compiled Flutter Web artifact served at /app
+test/                     Backend and frontend-serving tests
 scripts/build_flutter.py  Builds and embeds Flutter into FastAPI
-Additional Information/   API, planning, and deployment documentation
+additionals/              API, planning, and deployment documentation
 ```
 
 ## Production URLs
@@ -49,15 +47,14 @@ Additional Information/   API, planning, and deployment documentation
 Start FastAPI:
 
 ```bash
-cd backend
 uv sync --dev
-uv run uvicorn app.main:app --reload
+uv run uvicorn app.backend.main:app --reload
 ```
 
 Run Flutter against the local backend in another terminal:
 
 ```bash
-cd frontend
+cd app/frontend/flutter
 flutter pub get
 flutter run -d chrome --dart-define=API_BASE_URL=http://127.0.0.1:8000
 ```
@@ -76,19 +73,19 @@ http://127.0.0.1:8000/health
 Run from the repository root:
 
 ```bash
-python scripts/build_flutter.py
-cd backend
+uv run python scripts/build_flutter.py
 uv run pytest
 uv run fastapi deploy .
 ```
 
 The build script runs `flutter pub get`, builds with `--base-href /app/`,
-passes the FastAPI URL through `API_BASE_URL`, and copies the output into the
-backend package. FastAPI Cloud must deploy the backend after this build step.
+passes the FastAPI URL through `API_BASE_URL`, and copies the output into
+`app/frontend/flutter_web`. FastAPI Cloud deploys the root project after this
+build step.
 
 ## Configuration
 
-Copy `backend/.env.example` to `backend/.env` and configure values such as:
+Copy `.env.example` to `.env` and configure values such as:
 
 - `DATABASE_URL` for PostgreSQL
 - `CORS_ORIGINS` for local development origins
